@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const { graphqlHTTP } = require('express-graphql');
-const schema = require('./schema/schema');
+import { graphqlHTTP } from 'express-graphql';
+import { schema } from './Schema/schema.js';
+
 
 const PORT = process.env.PORT || 5000; // Set the port to listen on
 

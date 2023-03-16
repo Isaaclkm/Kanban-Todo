@@ -1,12 +1,14 @@
-const { makeExecutableSchema } = require('graphql-tools');
-const { resolvers } = require('./resolver.js')
+import { makeExecutableSchema } from 'graphql-tools';
+import { resolvers } from './resolver.js';
+
+
 
 const typeDefs = `
 
     type Query {
          hello: String
          greet(name: String!): String
-         getProjects: [Projects]
+         getProject: [Project]
          tasks: [Task]
          Users: [User]
     }
@@ -62,9 +64,7 @@ const typeDefs = `
 `;
 
 
-const schema = makeExecutableSchema({
+export const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
   });
-  
-  module.exports = schema;

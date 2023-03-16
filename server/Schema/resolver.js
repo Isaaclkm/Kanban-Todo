@@ -1,7 +1,6 @@
+import Project from '../Models/Project.js'
 
-
-module.exports = {
-    resolvers : {
+export const resolvers = {
         Query:{
             hello: ()=>{
                 return 'Hello World with Graphql'
@@ -15,8 +14,8 @@ module.exports = {
             async Users(){
                 return await User.find();
             },
-            async getProjects(){
-                return await Projects.find()
+            async getProject(){
+                return await Project.find()
             }
         }, 
         Mutation: {
@@ -26,8 +25,8 @@ module.exports = {
                 return input;
             },
             createProject(_, { input }){
-                tasks.push(input);
-                return input;
+                const newProject = new Project(input); 
+                return newProject.save();
             },
             async createUser(_, { input }){
                 const newUser = new User(input)
@@ -44,4 +43,5 @@ module.exports = {
     
         }
     }
-} 
+
+
