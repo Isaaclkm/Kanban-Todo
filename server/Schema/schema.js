@@ -9,7 +9,8 @@ const typeDefs = `
          hello: String
          greet(name: String!): String
          getProject: [Project]
-         tasks: [Task]
+         getColumn: [Column]
+         Tasks: [Task]
          Users: [User]
     }
 
@@ -18,6 +19,8 @@ const typeDefs = `
         title: String!
         description: String!
         number: Int
+        projectId: String!
+        columnId: String! 
     }
 
     type User{
@@ -26,20 +29,35 @@ const typeDefs = `
         lastname: String!
         age: Int
     }
+
     type Project {
-        id: ID!
+        _id: ID
         name: String!
         description: String
         createdBy: User!
         createdAt: Date!
+        columns: [Column]
+      }
+
+    type Column {
+        _id: ID!
+        name: String!
+        tasks: [Task]
       }
 
     type Mutation {
         createTask(input: TaskInput): Task
+
         createUser(input: UserInput): User
-        createProject(input: ProjectInput): Project
-        deleteUser(_id: ID): User
         updateUser(_id: ID, input: UserInput): User
+        deleteUser(_id: ID): User
+        
+        createProject(input: ProjectInput): Project
+        updateProject(_id: ID, input: ProjectInput): Project 
+        deleteProject(_id: ID): Project
+
+        createColumn(input: ColumnInput): Column
+        
     }
 
     scalar Date
@@ -47,7 +65,6 @@ const typeDefs = `
     input TaskInput{
         title: String!
         description: String!
-        number: Int
     }
 
     input UserInput {
@@ -57,10 +74,14 @@ const typeDefs = `
     }
 
     input ProjectInput{
-        _id: ID
         name: String!
-        createdAt: Date!
+        description: String
     }
+
+    input ColumnInput {
+        name: String!
+        projectId: ID!
+      }
 `;
 
 

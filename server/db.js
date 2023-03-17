@@ -1,3 +1,16 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
-mongoose.connect('mongodb://localhost:27017/mydatabase', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('strictQuery', false);
+
+export async function connect(){
+    try {
+        mongoose.connect('mongodb://0.0.0.0:27017/mongodbgraphql', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+         })
+        console.log(">>>DB is connected");
+    } catch(e) {
+        console.log('Something goes wrong')
+        console.log(e)
+    }
+}

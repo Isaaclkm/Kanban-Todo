@@ -5,6 +5,10 @@ const ProjectSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	columns: {
+		type: Array, 
+		required: true,
+	}
 }, {
 	timestamps: true,
 });

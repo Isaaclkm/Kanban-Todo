@@ -1,4 +1,6 @@
 import Project from '../Models/Project.js'
+import Task from '../Models/Task.js'
+import Column from '../Models/Column.js'
 
 export const resolvers = {
         Query:{
@@ -8,8 +10,8 @@ export const resolvers = {
             greet: (root, { name }, ctx)=>{
                 return `Hello ${name}`
             },
-            tasks(){
-                return tasks
+            async Tasks(){
+                return await Task.find();
             },
             async Users(){
                 return await User.find();
@@ -19,14 +21,23 @@ export const resolvers = {
             }
         }, 
         Mutation: {
-            createTask(_, { input }){
-                input._id = tasks.length
-                tasks.push(input);
-                return input;
+            async createTask(_, { input }){
+                const newTask = new Task(input); 
+                await newTask.save();
+                console.log(newTask)
+                return newTask
             },
-            createProject(_, { input }){
+            async updateProject(_, {_id, input }){
+                return await Project.findByIdAndUpdate(_id, input, { new: true })
+            },
+            async createProject(_, { input }){
                 const newProject = new Project(input); 
-                return newProject.save();
+                await newProject.save();
+                console.log(newProject)
+                return newProject
+            },
+            async updateProject(_, {_id, input }){
+                return await Project.findByIdAndUpdate(_id, input, { new: true })
             },
             async createUser(_, { input }){
                 const newUser = new User(input)
@@ -39,6 +50,20 @@ export const resolvers = {
             },
             async updateUser(_, {_id, input }){
                 return await User.findByIdAndUpdate(_id, input, { new: true })
+            },
+            
+            async createColumn(_, { input }){
+                const newColumn = new Column(input)
+                await newColumn.save()
+              
+                const updatedProject = await Project.findByIdAndUpdate(
+                  input.projectId,
+                  { $push: { columns: newColumn } },
+                  { new: true }
+                )
+              
+                console.log(newColumn)
+                return updatedProject
             }
     
         }

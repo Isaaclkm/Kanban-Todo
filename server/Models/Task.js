@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const TaskSchema = new mongoose.Schema({
-	title: {
+	name: {
 		type: String,
 		required: true,
 	},
@@ -13,6 +13,11 @@ const TaskSchema = new mongoose.Schema({
 		ref: 'Project',
 		required: true,
 	},
+	columnId: {
+		type: mongoose.Schema.Types.ObjectID,
+		ref: 'Column', 
+		required: true,
+	}
 }, {
 	timestamps: true,
 });
