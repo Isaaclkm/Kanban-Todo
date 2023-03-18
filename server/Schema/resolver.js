@@ -51,7 +51,7 @@ export const resolvers = {
             async updateUser(_, {_id, input }){
                 return await User.findByIdAndUpdate(_id, input, { new: true })
             },
-            
+            // Do re mi
             async createColumn(_, { input }){
                 const newColumn = new Column(input)
                 await newColumn.save()
