@@ -16,11 +16,11 @@ const typeDefs = `
 
     type Task{
         _id: ID
-        title: String!
         description: String!
         number: Int
         projectId: String!
         columnId: String! 
+        createdAt: Date!
     }
 
     type User{
@@ -46,7 +46,6 @@ const typeDefs = `
       }
 
     type Mutation {
-        createTask(input: TaskInput): Task
 
         createUser(input: UserInput): User
         updateUser(_id: ID, input: UserInput): User
@@ -57,21 +56,20 @@ const typeDefs = `
         deleteProject(_id: ID): Project
 
         createColumn(input: ColumnInput): Column
+        updateColumn(_id: ID, input: ColumnInput): Column
+
+
+        createTask(input: TaskInput): Task
         
     }
 
     scalar Date
 
-    input TaskInput{
-        title: String!
-        description: String!
-    }
-
     input UserInput {
         firstname: String!
         lastname: String!
         age: Int
-    }
+    }   
 
     input ProjectInput{
         name: String!
@@ -82,6 +80,11 @@ const typeDefs = `
         name: String!
         projectId: ID!
       }
+
+    input TaskInput{
+        description: String!
+        columnId: ID!
+    }
 `;
 
 

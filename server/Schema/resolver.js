@@ -51,7 +51,8 @@ export const resolvers = {
             async updateUser(_, {_id, input }){
                 return await User.findByIdAndUpdate(_id, input, { new: true })
             },
-            // Do re mi
+
+            // Column resolvers 
             async createColumn(_, { input }){
                 const newColumn = new Column(input)
                 await newColumn.save()
@@ -64,9 +65,21 @@ export const resolvers = {
               
                 console.log(newColumn)
                 return updatedProject
-            }
-    
-        }
+            },
+            async updateColumn(_, { _id, input }){     
+                try {
+                  const updatedProject = await Project.findByIdAndUpdate(
+                    input.projectId,
+                    { $set: { [`columns.$[col].input[name]`]: input.name } },
+                    { new: true, arrayFilters: [{ "col._id": _id }] }
+                  );
+                  const updatedColumn = updatedProject.columns.find(column => column._id.toString() === _id);
+                  return updatedColumn;
+                } catch (err) {
+                  throw new Error(`Could not update column with ID ${_id} in project with ID ${input.projectId}: ${err.message}`);
+                }
+        },
     }
-
+    
+}
 

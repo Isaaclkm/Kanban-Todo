@@ -10,6 +10,10 @@ const ColumnSchema = new mongoose.Schema({
 		ref: 'Project',
 		required: true,
 	},
+	tasks: {
+		type: Array, 
+		required: true,
+	}
 }, {
 	timestamps: true,
 });
