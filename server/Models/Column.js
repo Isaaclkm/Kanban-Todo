@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const ColumnSchema = new mongoose.Schema({
-	name: {
+	title: {
 		type: String,
 		required: true,
 	},
@@ -11,8 +11,8 @@ const ColumnSchema = new mongoose.Schema({
 		required: true,
 	},
 	tasks: {
-		type: Array, 
-		required: true,
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Task',
 	}
 }, {
 	timestamps: true,

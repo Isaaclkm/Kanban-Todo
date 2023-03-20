@@ -5,86 +5,55 @@ import { resolvers } from './resolver.js';
 
 const typeDefs = `
 
-    type Query {
-         hello: String
-         greet(name: String!): String
-         getProject: [Project]
-         getColumn: [Column]
-         Tasks: [Task]
-         Users: [User]
-    }
+type Query {
+    hello: String
+    projects: [Project]
+    project(_id: ID!): Project
+    columns: [Column]
+    column(_id: ID!): Column
+    tasks: [Task]
+    task(_id: ID!): Task
+  }
 
-    type Task{
-        _id: ID
-        description: String!
-        number: Int
-        projectId: String!
-        columnId: String! 
-        createdAt: Date!
-    }
+  type Mutation {
+    createProject(name: String!, description: String!): Project
+    updateProject(_id: ID!, name: String!, description: String): Project
+    deleteProject(_id: ID!): Project
 
-    type User{
-        _id: ID
-        firstname: String!
-        lastname: String!
-        age: Int
-    }
+    createColumn(title: String!, projectId: ID!): Column
+    updateColumn(_id: ID!, title: String!): Column
+    deleteColumn(_id: ID!): Column
 
-    type Project {
-        _id: ID
-        name: String!
-        description: String
-        createdBy: User!
-        createdAt: Date!
-        columns: [Column]
-      }
+    createTask(title: String!, columnId: ID!): Task
+    updateTask(_id: ID!, title: String!, columnId: ID!): Task
+    deleteTask(_id: ID!): Task
+  }
 
-    type Column {
-        _id: ID!
-        name: String!
-        tasks: [Task]
-      }
+  type Project {
+    _id: ID!
+    name: String!
+    description: String!
+    createdAt: String
+    updatedAt: String
+    columns: [Column]
+    tasks: [Task]
+  }
 
-    type Mutation {
+  type Column{
+    _id: ID!
+    title: String!
+    project: Project
+    createdAt: String!
+  }
 
-        createUser(input: UserInput): User
-        updateUser(_id: ID, input: UserInput): User
-        deleteUser(_id: ID): User
-        
-        createProject(input: ProjectInput): Project
-        updateProject(_id: ID, input: ProjectInput): Project 
-        deleteProject(_id: ID): Project
-
-        createColumn(input: ColumnInput): Column
-        updateColumn(_id: ID, input: ColumnInput): Column
-
-
-        createTask(input: TaskInput): Task
-        
-    }
-
-    scalar Date
-
-    input UserInput {
-        firstname: String!
-        lastname: String!
-        age: Int
-    }   
-
-    input ProjectInput{
-        name: String!
-        description: String
-    }
-
-    input ColumnInput {
-        name: String!
-        projectId: ID!
-      }
-
-    input TaskInput{
-        description: String!
-        columnId: ID!
-    }
+  type Task {
+    _id: ID!
+    title: String!
+    project: Project
+    column: Column
+    createdAt: String
+    updatedAt: String
+  }
 `;
 
 

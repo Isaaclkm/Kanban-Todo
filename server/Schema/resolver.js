@@ -3,83 +3,172 @@ import Task from '../Models/Task.js'
 import Column from '../Models/Column.js'
 
 export const resolvers = {
-        Query:{
-            hello: ()=>{
-                return 'Hello World with Graphql'
-            },
-            greet: (root, { name }, ctx)=>{
-                return `Hello ${name}`
-            },
-            async Tasks(){
-                return await Task.find();
-            },
-            async Users(){
-                return await User.find();
-            },
-            async getProject(){
-                return await Project.find()
-            }
-        }, 
-        Mutation: {
-            async createTask(_, { input }){
-                const newTask = new Task(input); 
-                await newTask.save();
-                console.log(newTask)
-                return newTask
-            },
-            async updateProject(_, {_id, input }){
-                return await Project.findByIdAndUpdate(_id, input, { new: true })
-            },
-            async createProject(_, { input }){
-                const newProject = new Project(input); 
-                await newProject.save();
-                console.log(newProject)
-                return newProject
-            },
-            async updateProject(_, {_id, input }){
-                return await Project.findByIdAndUpdate(_id, input, { new: true })
-            },
-            async createUser(_, { input }){
-                const newUser = new User(input)
-                await newUser.save()
-                console.log(newUser)
-                return newUser
-            },
-            async deleteUser(_, { _id }){
-               return await User.findByIdAndDelete(_id);
-            },
-            async updateUser(_, {_id, input }){
-                return await User.findByIdAndUpdate(_id, input, { new: true })
-            },
+	Query: {
+		hello: () => "Hello world!",
+		projects: async () => {
+			return await Project.find();
+		},
+		project: async (_, { _id }) => {
+			return await Project.findById(_id);
+		},
+        columns: async () => {
+			return await Column.find();
+		},
+		column: async (_, { _id }) => {
+			return await Column.findById(_id);
+		},
+		tasks: async () => {
+			return await Task.find();
+		},
+		task: async (_, { _id }) => {
+			return await Task.findById(_id);
+		},
+	},
+	Mutation: {
+        // Project resolvers
+		createProject: async (_, { name, description }) => {
+			const project = new Project({
+				name,
+				description,
+			});
+			const savedProject = project.save();
+			return savedProject;
+		},
+		deleteProject: async (_, { _id }) => {
+			const deletedProject = await Project.findByIdAndDelete(_id);
+			if (!deletedProject) throw new Error("Project not found");
+			return deletedProject;
+		},
+		updateProject: async (_, args) => {
+			const updatedProject = await Project.findByIdAndUpdate(
+				args._id,
+				args,
+				{ new: true }
+			);
+			if (!updatedProject) throw new Error("Project not found");
+			return updatedProject;
+		},
 
-            // Column resolvers 
-            async createColumn(_, { input }){
-                const newColumn = new Column(input)
-                await newColumn.save()
-              
-                const updatedProject = await Project.findByIdAndUpdate(
-                  input.projectId,
-                  { $push: { columns: newColumn } },
-                  { new: true }
-                )
-              
-                console.log(newColumn)
-                return updatedProject
-            },
-            async updateColumn(_, { _id, input }){     
-                try {
-                  const updatedProject = await Project.findByIdAndUpdate(
-                    input.projectId,
-                    { $set: { [`columns.$[col].input[name]`]: input.name } },
-                    { new: true, arrayFilters: [{ "col._id": _id }] }
-                  );
-                  const updatedColumn = updatedProject.columns.find(column => column._id.toString() === _id);
-                  return updatedColumn;
-                } catch (err) {
-                  throw new Error(`Could not update column with ID ${_id} in project with ID ${input.projectId}: ${err.message}`);
-                }
-        },
-    }
+        // Column resolvers
+		createColumn: async (_, { title, projectId }) => {
+            try {
+              const projectFound = await Project.findById(projectId);
+              if (!projectFound) {
+                throw new Error("Project not found");
+              }
+          
+              const column = new Column({
+                title,
+                projectId,
+              });
+          
+              await column.save();
+          
+              projectFound.columns.push(column);
+              await projectFound.save();
+          
+              const updatedProject = await Project.findById(projectId)
+                .populate('columns')
+                .exec();
+          
+              return column;
+            } catch (error) {
+              throw new Error(error);
+            }
+          },
+
+          deleteColumn: async (_, { _id }) => {
+            try {
+              const column = await Column.findById(_id);
+              if (!column) {
+                throw new Error("Column not found");
+              }
+          
+              const project = await Project.findById(column.projectId);
+              if (!project) {
+                throw new Error("Project not found");
+              }
+          
+              project.columns = project.columns.filter((col) => col.toString() !== _id.toString());
+              await project.save();
+          
+              await Task.deleteMany({_id });
+              await Column.findByIdAndDelete(_id);
+          
+              return column;
+            } catch (error) {
+              throw new Error(error);
+            }
+          },
+		updateColumn: async (_, { _id, title }) => {
+            const columnId = _id
+            try {
+              const column = await Column.findById(columnId);
+              if (!column) {
+                throw new Error("Column not found");
+              }
+          
+              column.title = title;
+              const updatedColumn = await column.save();
+          
+              return updatedColumn;
+            } catch (error) {
+              throw new Error(error);
+            }
+          },
+
+        // Tasks resolvers 
+        createTask: async (_, { title, columnId }) => {
+            try {
+              const columnFound = await Column.findById(columnId);
+              if (!columnFound) {
+                throw new Error("Column not found");
+              }
+          
+              const task = new Column({
+                title,
+                columnId,
+              });
+          
+              await task.save();
+          
+              columnFound.tasks.push(task);
+              await columnFound.save();
+          
+              const updatedColumn = await Column.findById(columnId)
+                .populate('tasks')
+                .exec();
+          
+              return task;
+            } catch (error) {
+              throw new Error(error);
+            }
+          },
+		deleteTask: async (_, { _id }) => {
+			const deletedTask = await Task.findByIdAndDelete(_id);
+			if (!deletedTask) throw new Error("Task not found");
+			return deletedTask;
+		},
+		updateTask: async (_, args) => {
+			const updatedTask = await Task.findByIdAndUpdate(args._id, args, {
+				new: true,
+			});
+			if (!updatedTask) throw new Error("Task not found");
+			return updatedTask;
+		}
+
+	},
+	Project: {
+		tasks: async (parent) => {
+			return await Task.find({ projectId: parent._id });
+		}
+	},
+	Task: {
+		project: async (parent) => {
+			return await Project.findById(parent.projectId);
+		}
+	}
+};
     
-}
+
 

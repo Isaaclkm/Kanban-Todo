@@ -1,23 +1,22 @@
 import mongoose from 'mongoose';
 
 const TaskSchema = new mongoose.Schema({
-	name: {
+	title: {
 		type: String,
 		required: true,
 	},
     description: {
         type: String
     },
-	projectId: {
+	columnId: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Project',
+		ref: 'Column',
 		required: true,
 	},
-	columnId: {
-		type: mongoose.Schema.Types.ObjectID,
-		ref: 'Column', 
-		required: true,
-	}
+	tasks: [{
+		type: mongoose.Schema.Types.ObjectId, 
+		ref: 'Task'
+	}]
 }, {
 	timestamps: true,
 });
