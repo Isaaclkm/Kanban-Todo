@@ -8,12 +8,12 @@ const ColumnSchema = new mongoose.Schema({
 	projectId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Project',
-		required: true,
+		
 	},
-	tasks: {
+	tasks: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Task',
-	}
+	}]
 }, {
 	timestamps: true,
 });

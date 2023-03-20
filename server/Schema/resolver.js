@@ -117,7 +117,7 @@ export const resolvers = {
             }
           },
 
-        // Tasks resolvers 
+  // Tasks resolvers 
         createTask: async (_, { title, columnId }) => {
             try {
               const columnFound = await Column.findById(columnId);
@@ -125,7 +125,7 @@ export const resolvers = {
                 throw new Error("Column not found");
               }
           
-              const task = new Column({
+              const task = new Task({
                 title,
                 columnId,
               });
@@ -144,18 +144,45 @@ export const resolvers = {
               throw new Error(error);
             }
           },
-		deleteTask: async (_, { _id }) => {
-			const deletedTask = await Task.findByIdAndDelete(_id);
-			if (!deletedTask) throw new Error("Task not found");
-			return deletedTask;
-		},
-		updateTask: async (_, args) => {
-			const updatedTask = await Task.findByIdAndUpdate(args._id, args, {
-				new: true,
-			});
-			if (!updatedTask) throw new Error("Task not found");
-			return updatedTask;
-		}
+
+          deleteTask: async (_, { _id }) => {
+            try {
+              const task = await Task.findById(_id);
+              if (!task) {
+                throw new Error("Task not found");
+              }
+          
+              const column = await Column.findById(task.columnId);
+              if (!column) {
+                throw new Error("Column not found");
+              }
+          
+              column.tasks = column.tasks.filter((tas) => tas.toString() !== _id.toString());
+              await column.save();
+          
+              await Task.findByIdAndDelete(_id);
+          
+              return task;
+            } catch (error) {
+              throw new Error(error);
+            }
+          },
+          updateTask: async (_, { _id, title }) => {
+            const taskId = _id
+            try {
+              const task = await Task.findById(taskId);
+              if (!task) {
+                throw new Error("Task not found");
+              }
+          
+              task.title = title;
+              const updatedTask = await task.save();
+          
+              return updatedTask;
+            } catch (error) {
+              throw new Error(error);
+            }
+          },
 
 	},
 	Project: {
