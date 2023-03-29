@@ -1,11 +1,20 @@
-.App {
-  text-align: center;
-}
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
+.App{
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "Sidebar Boards Boards"
+    "Sidebar Boards Boards"
+    "Sidebar Boards Boards"; 
+}
+.Sidebar { grid-area: Sidebar; }
+.Boards { grid-area: Boards; }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
