@@ -12,7 +12,7 @@ const Sidebar = () => {
                 <li className="flex justify-center items-center flex-row
                 py-7 text-gray-500">
                     <img src={Board} alt="board"></img>
-                    <p>Manage</p> 
+                    <p>Create Project</p> 
                 </li>
                 <li className="flex justify-center items-center flex-col
                 py-7 border-l-4 border-purple-500 text-purple-500
