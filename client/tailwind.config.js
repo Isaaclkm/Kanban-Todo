@@ -5,9 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-      color: {
-        'bg-dark': '2B2C37',
-      }
+      colors: {
+        primary: '#3E3F4E',
+        secondary: '#E4EBFA',
+      },
     },
   },
   plugins: [],

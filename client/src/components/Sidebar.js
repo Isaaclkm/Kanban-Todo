@@ -1,41 +1,39 @@
 import React from 'react'
 import '../index.css'
 import Board from '../assets/icon-board.svg'
+import Logo from '../assets/logo-light.svg'
 
 const Sidebar = () => {
   return (
-    <div className="fixed inset-y-0 left-0 bg-dark[2B2C37] w-40">
-            <h1 className="flex items-center justify-center text-2xl
-            h-16 bg-purple-600 text-white font-bold">hussle</h1>
+    <div className="fixed inset-y-0 left-0 bg-primary w-72 flex flex-col flex-start">
 
-            <ul className="flex flex-col text-lg h-full">
-                <li className="flex justify-center items-center flex-row
-                py-7 text-gray-500">
+            <div className="image-container h-24  p-7">
+              <img src={Logo} alt="logo" className="flex items-center justify-center h-7 w-32"></img>
+            </div>
+        
+            <h1 className='uppercase text-secondary ml-7'>all boards (8)</h1>
+            <ul className="flex flex-col flex-start ml-7 text-lg h-full">
+                <li className="flex flex-start items-center flex-row
+                py-7 text-gray-500 gap-2">
                     <img src={Board} alt="board"></img>
-                    <p>Create Project</p> 
+                    <p>Platform Launch</p> 
                 </li>
-                <li className="flex justify-center items-center flex-col
-                py-7 border-l-4 border-purple-500 text-purple-500
-                font-bold">
+                <li className="flex flex-start items-center flex-row
+                py-7  text-purple-500  gap-2">
                   <img src={Board} alt="board"></img>
-                    Boards
+                    <p>Marketing Plan</p>
                 </li>
-                <li className="flex justify-center items-center flex-col
-                py-7 text-gray-500">
+                <li className="flex flex-start items-center flex-row
+                py-7 text-gray-500 gap-2">
                   <img src={Board} alt="board"></img>
-                    Schedule
+                    <p>Road Map</p>
                 </li>
-                <li className="flex justify-center items-center flex-col
-                py-7 text-gray-500">
+                <li className="flex flex-start items-center flex-row
+                py-7 text-gray-500 gap-2">
                   <img src={Board} alt="board"></img>
                     Report
                 </li>
 
-                <li className="flex justify-center items-center flex-col
-                py-7 text-gray-500 mt-auto mb-16">
-                  <img src={Board} alt="board"></img>
-                    Settings
-                </li>
             </ul>
         </div>
   )
