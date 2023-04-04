@@ -9,9 +9,15 @@ module.exports = {
         primary: '#3E3F4E',
         secondary: '#E4EBFA',
         third: '#2B2C37',
+        morado: '#635FC7',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+        addVariant('child', '& > *');
+        addVariant('child-hover', '& > *:hover');
+    }
+],
 }
 
