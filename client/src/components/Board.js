@@ -21,7 +21,7 @@ const Board = () => {
             {verdad ? 'No column' : data.map((title, id) => {
             return <Column data = {title} key= {id}/>
              })}
-        
+        {/* ok */}
         </div>
     </div>
     
