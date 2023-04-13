@@ -17,8 +17,7 @@ const Board = () => {
             title: 'Todo'},
             {   id: '2',
             title: 'Doing'},
-            {   id: '3',
-            title: 'Done'}
+            
     ]
   return (
     <div className='Board flex flex-col grow border-slate-600'>
@@ -35,12 +34,16 @@ const Board = () => {
             )}
 
         </div>
+
+
         <div className='Column  w-full h-full bg-third flex flex-row flex-1'>
             {verdad ? 'No column' : data.map((title, id) => {
             return <Column data = {title} key= {id} showOverlay={showOverlay}/>
              })}
         
         </div>
+        
+        {/* Overlay style */}
          {showOverlay && (
           <div
             className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
