@@ -56,6 +56,7 @@ const Board = () => {
              }}
            />
           )}
+          {/* Overlay Ends */}
     </div>
     
   )
