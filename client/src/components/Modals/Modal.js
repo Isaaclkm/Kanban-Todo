@@ -3,12 +3,12 @@ import './Modal.css'
 
 const Modal = ({onClose}) => {
   return (
-    <div className='modal modalOverlay overflow-y-scroll overflow-x-hidden bg-primary p-6 text-slate-100'>
+    <div className='modal modalOverlay overflow-y-scroll overflow-x-hidden bg-primary p-6 text-slate-100 scrollbar-hide md:scrollbar-default'>
         <h1 className='py-2.5 text-lg font-bold'>Add new Task</h1>
 
      <form class="w-full max-w-lg">
 
-        <div class="flex flex-wrap -mx-3 mb-6 text-slate-100">
+        <div class="flex flex-wrap -mx-3 mb-6 text-slate-100 ">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-first-name">
                 Title

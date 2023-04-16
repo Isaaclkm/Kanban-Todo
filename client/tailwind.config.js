@@ -29,6 +29,7 @@ module.exports = {
     function ({ addVariant }) {
         addVariant('child', '& > *');
         addVariant('child-hover', '& > *:hover');
+        require('tailwind-scrollbar-hide');
     }
   ],
 }

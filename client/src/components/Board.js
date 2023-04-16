@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { createPortal } from 'react-dom';
 import Column from './Column'
-import Modal from './Modal';
+import Modal from './Modals/Modal';
+import NewCol from './Modals/NewCol';
 
 const Board = () => {
   const bg = {
@@ -10,6 +11,7 @@ const Board = () => {
     }
   }
     const [showModal, setShowModal] = useState(false);
+    const [showColModal, setShowColModal] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [verdad, setVerdad] = useState(false)
     const data = [
@@ -35,17 +37,29 @@ const Board = () => {
 
         </div>
 
-
+              {/* Columns Section */}
         <div className='Column  w-full h-full bg-third flex flex-row flex-1'>
+          
             {verdad ? 'No column' : data.map((title, id) => {
             return <Column data = {title} key= {id} showOverlay={showOverlay}/>
              })}
            
              <div className="w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
-                <button className='rounded-full bg-third w-64 h-12 text-morado font-semibold'>+New Column</button>
+                
+              <button className='rounded-full bg-third w-64 h-12 text-morado font-semibold'  onClick={() => {
+              setShowColModal(true);
+              setShowOverlay(true);
+              }}>+New Column</button>
+
+              {showColModal && createPortal(
+              <NewCol onClose={() => {setShowColModal(!showColModal); setShowOverlay(!showOverlay)}} />,
+              document.body
+              )}
+
              </div>
         </div>
-        
+         {/* Column Ends */}
+
         {/* Overlay style */}
          {showOverlay && (
           <div
