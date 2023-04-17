@@ -67,6 +67,7 @@ const Board = () => {
             onClick={() => {
               setShowModal(false);
               setShowOverlay(false);
+              setShowColModal(false)
              }}
            />
           )}
