@@ -1,9 +1,13 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import { resolvers } from './resolver.js';
+// import { resolvers } from './resolver.js';
+import { gql } from "apollo-server"; 
+import {typeDefs as Project} from './projects.js'
+import {typeDefs as Columns} from './columns.js'
+import {typeDefs as Tasks} from './tasks.js'
 
 
 
-const typeDefs = `
+const rootTypeDefs = gql`
 
 type Query {
     hello: String
@@ -35,8 +39,8 @@ type Query {
     description: String!
     createdAt: String
     updatedAt: String
-    columns: [Column]
-    tasks: [Task]
+    #columns: [Column]
+    #tasks: [Task]
   }
 
   type Column{
@@ -57,7 +61,19 @@ type Query {
 `;
 
 
-export const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-  });
+
+export const resolvers = {
+	Query: {
+		hello: () => "Hello world bithces!",
+		projects: async () => {
+			return await Project.find();
+      }
+    
+    }
+  }
+
+export const typeDefs = {rootTypeDefs, Project, Columns, Tasks }
+// export const schema = makeExecutableSchema({
+//     typeDefs,
+//     resolvers,
+//   });

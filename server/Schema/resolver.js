@@ -4,7 +4,7 @@ import Column from '../Models/Column.js'
 
 export const resolvers = {
 	Query: {
-		hello: () => "Hello world!",
+		hello: () => "Hello world bithces!",
 		projects: async () => {
 			return await Project.find();
 		},
