@@ -3,9 +3,14 @@ import { gql } from "apollo-server";
 
 export const typeDefs = gql`
 
-type Query {
-    #tasks: [Task]
-    #task(_id: ID!): Task
+extend type Query {
+    tasks: [Task]
+    task(_id: ID!): Task
+  }
+  type Mutation {
+    createTask(title: String!, columnId: ID!): Task
+    updateTask(_id: ID!, title: String!, columnId: ID!): Task
+    deleteTask(_id: ID!): Task
   }
 
 

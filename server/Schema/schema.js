@@ -5,6 +5,7 @@ import {typeDefs as Project} from './projects.js'
 import {typeDefs as Columns} from './columns.js'
 import {typeDefs as Tasks} from './tasks.js'
 
+import{resolvers as projectResolvers} from './projects.js'
 
 
 const rootTypeDefs = gql`
@@ -62,7 +63,7 @@ type Query {
 
 
 
-export const resolvers = {
+export const rootResolvers = {
 	Query: {
 		hello: () => "Hello world bithces!",
 		projects: async () => {
@@ -72,7 +73,8 @@ export const resolvers = {
     }
   }
 
-export const typeDefs = {rootTypeDefs, Project, Columns, Tasks }
+export const resolvers = [rootResolvers, projectResolvers] 
+export const typeDefs = [rootTypeDefs, Project, Columns, Tasks ]
 // export const schema = makeExecutableSchema({
 //     typeDefs,
 //     resolvers,
