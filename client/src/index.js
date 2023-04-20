@@ -2,16 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 import { store } from './store/store';
 import {Provider} from 'react-redux';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const client = new ApolloClient({
+  uri: 'https://flyby-router-demo.herokuapp.com/',
+  cache: new InMemoryCache(),
+});
+
+
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <ApolloProvider client={client}>
       <App/>
-    </Provider>
+   </ApolloProvider>
   </React.StrictMode>
 );
 

@@ -2,8 +2,31 @@ import React from 'react'
 import '../index.css'
 import Board from '../assets/icon-board.svg'
 import Logo from '../assets/logo-light.svg'
+import { useQuery, gql } from "@apollo/client";
+
+
+
+const GET_PROJECT = gql`
+  query{
+  projects {
+    _id
+    name
+  }
+}
+`;
 
 const Sidebar = () => {
+  const { loading, error, data } = useQuery(GET_PROJECT);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    console.error(error);
+    return <div>Error!</div>;
+  }
+  const lol = data.projects.length;
+  
   return (
     <div className=" inset-y-0 left-0 bg-primary w-72 flex flex-col flex-start">
 
@@ -11,7 +34,7 @@ const Sidebar = () => {
               <img src={Logo} alt="logo" className="flex items-center justify-center h-6 w-36"></img>
             </div>
         
-            <h1 className='uppercase text-gray-400 ml-7 my-7 tracking-widest'>all boards (8)</h1>
+            <h1 className='uppercase text-gray-400 ml-7 my-7 tracking-widest'>all boards ({lol})</h1>
             <ul className="flex flex-col flex-start ml-7 text-base h-full space-y-6">
                 <li className="flex flex-start items-center flex-row
                 py-3	text-gray-400 gap-3.5 h-7 ">

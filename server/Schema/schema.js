@@ -67,10 +67,6 @@ type Query {
 export const rootResolvers = {
 	Query: {
 		hello: () => "Hello world bithces!",
-		projects: async () => {
-			return await Project.find();
-      }
-    
     }
   }
 

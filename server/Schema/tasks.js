@@ -1,4 +1,5 @@
 import { gql } from "apollo-server"; 
+import Task from '../Models/Task.js'
 
 
 export const typeDefs = gql`

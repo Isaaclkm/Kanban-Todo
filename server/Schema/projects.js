@@ -1,10 +1,11 @@
 import { gql } from "apollo-server"; 
-
+import Project from '../Models/Project.js'
 
 export const typeDefs = gql`
 
 extend type Query {
     project(_id: ID!): Project
+    projects: [Project]
   }
   
   type Mutation {
@@ -29,6 +30,9 @@ extend type Query {
 
 export const resolvers = {
 	Query: {
+    projects: async () => {
+			return await Project.find();
+		},
 		project: async (_, { _id }) => {
 			return await Project.findById(_id);
 		}
