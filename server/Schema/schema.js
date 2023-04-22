@@ -7,7 +7,7 @@ import {typeDefs as Tasks} from './tasks.js'
 
 import{resolvers as projectResolvers} from './projects.js'
 import{resolvers as taskResolvers} from './tasks.js'
-
+import{resolvers as colResolvers} from './columns.js'
 
 const rootTypeDefs = gql`
 
@@ -70,7 +70,7 @@ export const rootResolvers = {
     }
   }
 
-export const resolvers = [rootResolvers, projectResolvers, taskResolvers] 
+export const resolvers = [rootResolvers, projectResolvers, taskResolvers, colResolvers ] 
 export const typeDefs = [rootTypeDefs, Project, Columns, Tasks ]
 // export const schema = makeExecutableSchema({
 //     typeDefs,

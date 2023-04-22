@@ -1,6 +1,15 @@
 import React from 'react'
 import CardItem from './CardItem'
 
+const GET_PROJECT = gql`
+  query{
+  projects {
+    _id
+    name
+  }
+}
+`
+
 const  Column = ({data}) => {
   return (
     <div className=''>

@@ -1,5 +1,8 @@
 import { gql } from "apollo-server"; 
+import Column from '../Models/Column.js'
 import Project from '../Models/Project.js'
+import Task from '../Models/Task.js'
+
 
 export const typeDefs = gql`
 

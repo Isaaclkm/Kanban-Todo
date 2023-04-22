@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import Column from './Column'
 import Modal from './Modals/Modal';
 import NewCol from './Modals/NewCol';
+import { useQuery, gql } from "@apollo/client";
 
 const Board = () => {
   const bg = {
@@ -14,6 +15,15 @@ const Board = () => {
     const [showColModal, setShowColModal] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [verdad, setVerdad] = useState(false)
+
+    const GET_PROJECT = gql`
+    query{
+     projects {
+       _id
+       name
+       }
+      }`
+
     const data = [
         {   id: '1',
             title: 'Todo'},
@@ -44,7 +54,7 @@ const Board = () => {
             return <Column data = {title} key= {id} showOverlay={showOverlay}/>
              })}
            
-             <div className="w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
+             <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
                 
               <button className='rounded-full bg-third w-64 h-12 text-morado font-semibold'  onClick={() => {
               setShowColModal(true);

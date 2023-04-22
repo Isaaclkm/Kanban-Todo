@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../index.css'
 import Board from '../assets/icon-board.svg'
 import Logo from '../assets/logo-light.svg'
+import { createPortal } from 'react-dom';
 import { useQuery, gql } from "@apollo/client";
-
+import NewBoard from './Modals/NewBoard';
 
 
 const GET_PROJECT = gql`
@@ -16,6 +17,9 @@ const GET_PROJECT = gql`
 `;
 
 const Sidebar = () => {
+  const [showBoardModal, setShowBoardModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+// Apollo client starts
   const { loading, error, data } = useQuery(GET_PROJECT);
 
   if (loading) {
@@ -26,6 +30,17 @@ const Sidebar = () => {
     return <div>Error!</div>;
   }
   const lol = data.projects.length;
+
+ const names = data.projects.map(project => project.name);
+
+ const boards = names.map((item) =>
+  <li className="flex flex-start items-center flex-row
+  py-3	text-gray-400 gap-3.5 h-7 ">
+      <img src={Board} alt="board"></img>
+      <p>{item}</p> 
+  </li>
+)
+// Apollo client Ends
   
   return (
     <div className=" inset-y-0 left-0 bg-primary w-72 flex flex-col flex-start">
@@ -36,12 +51,9 @@ const Sidebar = () => {
         
             <h1 className='uppercase text-gray-400 ml-7 my-7 tracking-widest'>all boards ({lol})</h1>
             <ul className="flex flex-col flex-start ml-7 text-base h-full space-y-6">
-                <li className="flex flex-start items-center flex-row
-                py-3	text-gray-400 gap-3.5 h-7 ">
-                    <img src={Board} alt="board"></img>
-                    <p>Platform Launch</p> 
-                </li>
-                <li className="flex flex-start items-center flex-row
+                {boards}
+                
+                {/* <li className="flex flex-start items-center flex-row
                 py-3	text-gray-400 gap-3.5 h-7">
                   <img src={Board} alt="board"></img>
                     <p>Marketing Plan</p>
@@ -50,14 +62,39 @@ const Sidebar = () => {
                 py-3	text-gray-400 gap-3.5 h-7">
                   <img src={Board} alt="board"></img>
                     <p>Road Map</p>
-                </li>
+                </li> */}
+              <button onClick={() => {
+              setShowBoardModal(true);
+              setShowOverlay(true);
+              }}>
                 <li className="flex flex-start items-center flex-row
                 py-3	text-purple-400 gap-3.5 h-7">
                   <img src={Board} alt="board" className='color-purple'></img>
                     + Create New Board
-                </li>
+                </li> 
+                </button> 
+              {showBoardModal && createPortal(
+              <NewBoard onClose={() => {
+                setShowBoardModal(!showBoardModal); 
+                setShowOverlay(!showOverlay)
+              }} />,
+              document.body
+              )}
 
             </ul>
+
+
+            {/* Overlay style */}
+         {showOverlay && (
+          <div
+            className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
+            onClick={() => {
+              setShowOverlay(false);
+              setShowBoardModal(false)
+             }}
+           />
+          )}
+          {/* Overlay Ends */}
         </div>
   )
 }
