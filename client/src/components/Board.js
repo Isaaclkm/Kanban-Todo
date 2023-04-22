@@ -5,6 +5,15 @@ import Modal from './Modals/Modal';
 import NewCol from './Modals/NewCol';
 import { useQuery, gql } from "@apollo/client";
 
+const GET_COLUMN = gql`
+    query{
+      columns {
+       _id
+       title
+        }
+      }`
+
+
 const Board = () => {
   const bg = {
     overlay: {
@@ -16,23 +25,31 @@ const Board = () => {
     const [showOverlay, setShowOverlay] = useState(false);
     const [verdad, setVerdad] = useState(false)
 
-    const GET_PROJECT = gql`
-    query{
-     projects {
-       _id
-       name
-       }
-      }`
+    
 
-    const data = [
-        {   id: '1',
-            title: 'Todo'},
-            {   id: '2',
-            title: 'Doing'},
+    // const data = [
+    //     {   id: '1',
+    //         title: 'Todo'},
+    //         {   id: '2',
+    //         title: 'Doing'},
             
-    ]
+    // ]
+
+     // Apollo client starts
+  const { loading, error, data } = useQuery(GET_COLUMN);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    console.error(error);
+    return <div>Error!</div>;
+  }
+ const names = data.columns;
+
+// Apollo client Ends
   return (
-    <div className='Board flex flex-col grow border-slate-600'>
+    <div className='Board flex flex-col grow border-slate-600 overflow-y-scroll'>
         <div className='px-7 Top h-24 w-full flex flew-row justify-between items-center bg-primary grow'>
             <h1 className='text-slate-100 text-2xl font-semibold'>Platform Launch</h1>
             <button className='rounded-full bg-morado w-40 h-12 text-slate-100 font-semibold' onClick={() => {
@@ -48,9 +65,9 @@ const Board = () => {
         </div>
 
               {/* Columns Section */}
-        <div className='Column  w-full h-full bg-third flex flex-row flex-1'>
+        <div className='Column  w-full h-full bg-third flex flex-row flex-1 '>
           
-            {verdad ? 'No column' : data.map((title, id) => {
+            {verdad ? 'No column' : names.map((title, id) => {
             return <Column data = {title} key= {id} showOverlay={showOverlay}/>
              })}
            

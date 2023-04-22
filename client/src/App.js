@@ -5,9 +5,9 @@ import Board from './components/Board'
 
 function App() {
   return (
-  <div className="App flex flex-row flex-auto ">
-    <Sidebar/>
-    <Board/>
+  <div className="App flex flex-row flex-auto overflow-x-scroll">
+    <Sidebar className="flex-none"/>
+    <Board className="flex-none"/>
   </div>
       
   //  Hola como estas 
