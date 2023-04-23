@@ -43,7 +43,7 @@ const Sidebar = () => {
 // Apollo client Ends
   
   return (
-    <div className=" inset-y-0 left-0 bg-primary min-w-72 grow flex-col flex-start">
+    <div className="bg-primary w-1/5 flex-shrink-0 flex-col flex-start">
 
             <div className="image-container h-24  p-7">
               <img src={Logo} alt="logo" className="flex items-center justify-center h-6 w-36"></img>

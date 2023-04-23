@@ -49,8 +49,8 @@ const Board = () => {
 
 // Apollo client Ends
   return (
-    <div className='Board flex flex-col grow border-slate-600 overflow-y-scroll'>
-        <div className='px-7 Top h-24 w-full flex flew-row justify-between items-center bg-primary grow'>
+    <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5'>
+        <div className='px-7 Top max-h-24 w-full flex flew-row justify-between items-center bg-primary grow'>
             <h1 className='text-slate-100 text-2xl font-semibold'>Platform Launch</h1>
             <button className='rounded-full bg-morado w-40 h-12 text-slate-100 font-semibold' onClick={() => {
               setShowModal(true);
@@ -65,7 +65,7 @@ const Board = () => {
         </div>
 
               {/* Columns Section */}
-        <div className='Column  w-full h-full bg-third flex flex-row flex-1 '>
+        <div className='Column  w-full h-full bg-third flex flex-row flex-1 overflow-x-scroll'>
           
             {verdad ? 'No column' : names.map((title, id) => {
             return <Column data = {title} key= {id} showOverlay={showOverlay}/>

@@ -5,7 +5,7 @@ import Board from './components/Board'
 
 function App() {
   return (
-  <div className="App flex flex-row flex-auto overflow-x-scroll">
+  <div className="App flex flex-row flex-auto overflow-hidden h-full">
     <Sidebar className="flex-none"/>
     <Board className="flex-none"/>
   </div>
