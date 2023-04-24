@@ -7,11 +7,16 @@ import { useQuery, gql } from "@apollo/client";
 
 const GET_COLUMN = gql`
     query{
-      columns {
-       _id
-       title
-        }
-      }`
+  columns {
+    _id
+    title
+    tasks {
+      _id
+      title
+    }
+  }
+}`
+
 
 
 const Board = () => {
@@ -45,12 +50,16 @@ const Board = () => {
     console.error(error);
     return <div>Error!</div>;
   }
- const names = data.columns;
+
+  const { columns } = data
+
+
+
 
 // Apollo client Ends
   return (
-    <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5'>
-        <div className='px-7 Top max-h-24 w-full flex flew-row justify-between items-center bg-primary grow'>
+    <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5 min-h-screen'>
+        <div className='px-7 Top min-h-1/5 max-h-24 w-full flex flew-row justify-between items-center bg-primary grow borderborder-slate-300'>
             <h1 className='text-slate-100 text-2xl font-semibold'>Platform Launch</h1>
             <button className='rounded-full bg-morado w-40 h-12 text-slate-100 font-semibold' onClick={() => {
               setShowModal(true);
@@ -65,12 +74,16 @@ const Board = () => {
         </div>
 
               {/* Columns Section */}
-        <div className='Column  w-full h-full bg-third flex flex-row flex-1 overflow-x-scroll'>
+        <div className='Column  w-full min-h-4/5 bg-third flex flex-row flex-1 overflow-x-scroll overflow-y-auto'>
           
-            {verdad ? 'No column' : names.map((title, id) => {
-            return <Column data = {title} key= {id} showOverlay={showOverlay}/>
-             })}
+            {/* {verdad ? 'No column' : taskes.map((tasks, id) => {
+            return <Column data = {tasks} key= {id} showOverlay={showOverlay}/>
+             })} */}
            
+           {columns.map(column => (
+           <Column key={column._id} column={column} />
+           ))}
+
              <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
                 
               <button className='rounded-full bg-third w-64 h-12 text-morado font-semibold'  onClick={() => {

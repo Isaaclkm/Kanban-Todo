@@ -3,20 +3,28 @@ import CardItem from './CardItem'
 
 
 
-const  Column = ({data}) => {
+const  Column = ({ column }) => {
+  const { title, tasks } = column;
+
   return (
     <div className=''>
        <div className="w-72 h-full bg-third child:ml-4 child:mb-5">
           <div class="Column-Title flex items-center">
              <span class="h-4 w-4 rounded-full bg-blue-500 mr-2"></span>
-             <span class="uppercase text-gray-400 tracking-widest">{data.title} </span>
+             <span class="uppercase text-gray-400 tracking-widest">{title} </span>
           </div>
-                   
+
+      {tasks.map(task => (
+      <CardItem key={task._id} task={task} />
+         ))}
+{/*                    
           <CardItem/>
           <CardItem/>
           <CardItem/>
           <CardItem/>
           <CardItem/>
+          <CardItem/>
+   */}
 
       </div>
 

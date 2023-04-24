@@ -106,8 +106,8 @@ export const resolvers = {
 
     },
     Task: {
-      project: async (parent) => {
-        return await Project.findById(parent.projectId);
+      column: async (parent) => {
+        return await Column.findById(parent.columnId);
       }
     },
   }

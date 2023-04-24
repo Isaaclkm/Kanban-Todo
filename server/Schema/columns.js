@@ -21,6 +21,7 @@ extend type Query {
     title: String!
     project: Project
     createdAt: String!
+    tasks: [Task]
   }
 
 `
@@ -101,5 +102,10 @@ updateColumn: async (_, { _id, title }) => {
           throw new Error(error);
         }
       },
+    },
+    Column: {
+      tasks: async (parent) => {
+        return await Task.find({ columnId: parent._id });
+      }
     }
 }
