@@ -67,7 +67,7 @@ const Board = () => {
             }}> + Add new Task</button>
 
             {showModal && createPortal(
-             <Modal onClose={() => {setShowModal(!showModal); setShowOverlay(!showOverlay)}} />,
+             <Modal onClose={() => {setShowModal(!showModal); setShowOverlay(!showOverlay)}} columns={columns} />,
             document.body
             )}
 
