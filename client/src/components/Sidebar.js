@@ -8,7 +8,7 @@ import NewBoard from './Modals/NewBoard';
 import { Link, useParams } from 'react-router-dom';
 
 
-const GET_PROJECT = gql`
+const GET_PROJECTS = gql`
   query{
   projects {
     _id
@@ -22,7 +22,7 @@ const Sidebar = () => {
   const [showOverlay, setShowOverlay] = useState(false);
 // Apollo client starts
   const { projectId } = useParams();
-  const { loading, error, data } = useQuery(GET_PROJECT);
+  const { loading, error, data } = useQuery(GET_PROJECTS);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -32,17 +32,14 @@ const Sidebar = () => {
     return <div>Error!</div>;
   }
   const lol = data.projects.length;
-
- const names = data.projects.map(project => project.name);
-
- const { project } = data;
-
- const boards = names.map((item) =>
+  const { boardss } = data
+  const prot = data.projects.map(project => project.name);
+  const boards = boardss.map((project) =>
   <li className="flex flex-start items-center flex-row
-  py-3	text-gray-400 gap-3.5 h-7 " key={project._id}>
+  py-3	text-gray-400 gap-3.5 h-7 " key = {project._id}>
       <img src={Board} alt="board"></img>
-      <Link to={`/project/${project._id}`}>{project.name}</Link>
-      <p>{item}</p> 
+      {/* <Link to={`/project/${project.id}`}>{project.name}</Link> */}
+      <p>{project.name}</p> 
   </li>
 )
 // Apollo client Ends
