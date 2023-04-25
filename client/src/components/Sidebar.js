@@ -5,6 +5,7 @@ import Logo from '../assets/logo-light.svg'
 import { createPortal } from 'react-dom';
 import { useQuery, gql } from "@apollo/client";
 import NewBoard from './Modals/NewBoard';
+import { Link, useParams } from 'react-router-dom';
 
 
 const GET_PROJECT = gql`
@@ -20,6 +21,7 @@ const Sidebar = () => {
   const [showBoardModal, setShowBoardModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 // Apollo client starts
+  const { projectId } = useParams();
   const { loading, error, data } = useQuery(GET_PROJECT);
 
   if (loading) {
@@ -33,10 +35,13 @@ const Sidebar = () => {
 
  const names = data.projects.map(project => project.name);
 
+ const { project } = data;
+
  const boards = names.map((item) =>
   <li className="flex flex-start items-center flex-row
-  py-3	text-gray-400 gap-3.5 h-7 ">
+  py-3	text-gray-400 gap-3.5 h-7 " key={project._id}>
       <img src={Board} alt="board"></img>
+      <Link to={`/project/${project._id}`}>{project.name}</Link>
       <p>{item}</p> 
   </li>
 )
