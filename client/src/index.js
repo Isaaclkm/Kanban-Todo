@@ -3,22 +3,40 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
-import { store } from './store/store';
-import {Provider} from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const client = new ApolloClient({
   uri: 'http://localhost:4000//graphql',
   cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+    },
+    query: {
+      fetchPolicy: 'no-cache',
+    },
+  },
 });
+// This will ensure that every time a query is made, it will fetch the latest data from the server instead of using cached data.
+
+
+
+
+
+
+
 
 
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App/>
-   </ApolloProvider>
+      <BrowserRouter>
+          <App/>
+       </BrowserRouter>
+     </ApolloProvider>
   </React.StrictMode>
 );
 

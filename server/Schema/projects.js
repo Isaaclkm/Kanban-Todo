@@ -67,8 +67,8 @@ export const resolvers = {
   },
   Project: {
 		columns: async (parent) => {
-			return await Column.find({ columnId: parent._id });
-		},
+      return await Column.find({ projectId: parent._id });
+    },
     tasks: async (parent) => {
       return await Task.find({ taskId: parent._id });
     }

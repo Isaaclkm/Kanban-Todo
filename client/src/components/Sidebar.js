@@ -8,41 +8,11 @@ import NewBoard from './Modals/NewBoard';
 import { Link, useParams } from 'react-router-dom';
 
 
-const GET_PROJECTS = gql`
-  query{
-  projects {
-    _id
-    name
-  }
-}
-`;
-
-const Sidebar = () => {
+const Sidebar = ({projects, onProjectSelect }) => {
   const [showBoardModal, setShowBoardModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-// Apollo client starts
-  const { projectId } = useParams();
-  const { loading, error, data } = useQuery(GET_PROJECTS);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    console.error(error);
-    return <div>Error!</div>;
-  }
-  const lol = data.projects.length;
-  const { boardss } = data
-  const prot = data.projects.map(project => project.name);
-  const boards = boardss.map((project) =>
-  <li className="flex flex-start items-center flex-row
-  py-3	text-gray-400 gap-3.5 h-7 " key = {project._id}>
-      <img src={Board} alt="board"></img>
-      {/* <Link to={`/project/${project.id}`}>{project.name}</Link> */}
-      <p>{project.name}</p> 
-  </li>
-)
-// Apollo client Ends
+
   
   return (
     <div className="bg-primary w-1/5 flex-shrink-0 flex-col flex-start border-x	border-slate-300">
@@ -51,20 +21,19 @@ const Sidebar = () => {
               <img src={Logo} alt="logo" className="flex items-center justify-center h-6 w-36"></img>
             </div>
         
-            <h1 className='uppercase text-gray-400 ml-7 my-7 tracking-widest'>all boards ({lol})</h1>
+            <h1 className='uppercase text-gray-400 ml-7 my-7 tracking-widest'>all boards </h1>
             <ul className="flex flex-col flex-start ml-7 text-base h-full space-y-6">
-                {boards}
+                {/* {boards} */}
                 
-                {/* <li className="flex flex-start items-center flex-row
-                py-3	text-gray-400 gap-3.5 h-7">
-                  <img src={Board} alt="board"></img>
-                    <p>Marketing Plan</p>
-                </li>
-                <li className="flex flex-start items-center flex-row
-                py-3	text-gray-400 gap-3.5 h-7">
-                  <img src={Board} alt="board"></img>
-                    <p>Road Map</p>
-                </li> */}
+                   {projects.map((project) => (
+                     <li className="flex flex-start items-center flex-row
+                     py-3	text-gray-400 gap-3.5 h-7 "key={project._id}>
+                      <img src={Board} alt="board"></img>
+                      <Link to={`/project/${project._id}`} onClick={() => onProjectSelect(project._id)}>{project.name}</Link>
+                     </li>
+                     ))}
+                          
+            
               <button onClick={() => {
               setShowBoardModal(true);
               setShowOverlay(true);

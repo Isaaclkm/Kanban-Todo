@@ -5,46 +5,49 @@ import Modal from './Modals/Modal';
 import NewCol from './Modals/NewCol';
 import TopBar from './TopBar';
 import { useQuery, gql } from "@apollo/client";
+import { useParams } from 'react-router-dom';
 
-const GET_COLUMN = gql`
-    query{
-  columns {
-    _id
-    title
-    tasks {
-      _id
-      title
+const GET_PROJECT = gql`
+  query($id: ID!){
+    project(_id: $id) {
+     _id
+     name
+    columns {
+        _id
+        title
+        tasks {
+          _id
+          title
+        }
+      }
     }
   }
-}`
-
+`
 
 
 const Board = () => {
+
   const bg = {
     overlay: {
       backgroundColor: "#FFFF00"
     }
   }
+
     const [showModal, setShowModal] = useState(false);
     const [showColModal, setShowColModal] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
 
+    const { id } = useParams();
 
+    const { loading, error, data } = useQuery(GET_PROJECT, {
+      variables: {id},
+    });
   
-     // Apollo client starts
-  const { loading, error, data } = useQuery(GET_COLUMN);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    console.error(error);
-    return <div>Error!</div>;
-  }
-
-  const { columns } = data
-
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :</p>;
+  
+    const { _id, name, columns } = data.project;
+  
 
 
 
