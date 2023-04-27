@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../index.css'
-import Board from '../assets/icon-board.svg'
+import boardIcon from '../assets/icon-board.svg'
 import Logo from '../assets/logo-light.svg'
 import { createPortal } from 'react-dom';
 import { useQuery, gql } from "@apollo/client";
@@ -28,7 +28,7 @@ const Sidebar = ({projects, onProjectSelect }) => {
                    {projects.map((project) => (
                      <li className="flex flex-start items-center flex-row
                      py-3	text-gray-400 gap-3.5 h-7 "key={project._id}>
-                      <img src={Board} alt="board"></img>
+                      <img src={boardIcon} alt="board-icon"></img>
                       <Link to={`/project/${project._id}`} onClick={() => onProjectSelect(project._id)}>{project.name}</Link>
                      </li>
                      ))}
@@ -40,7 +40,7 @@ const Sidebar = ({projects, onProjectSelect }) => {
               }}>
                 <li className="flex flex-start items-center flex-row
                 py-3	text-purple-400 gap-3.5 h-7">
-                  <img src={Board} alt="board" className='color-purple'></img>
+                  <img src={boardIcon} alt="board-icon" className='color-purple'></img>
                     + Create New Board
                 </li> 
                 </button> 

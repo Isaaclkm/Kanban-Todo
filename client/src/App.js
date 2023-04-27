@@ -8,6 +8,7 @@ import {Switch} from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
+
 const GET_PROJECTS = gql`
   query  {
     projects {
@@ -25,10 +26,11 @@ function App() {
   const { loading, error, data, refetch } = useQuery(GET_PROJECTS);
   const [selectedProject, setSelectedProject] = useState(null);
 
+
   const handleProjectSelect = (projectId) => {
     setSelectedProject(projectId);
   };
-  
+
   // useEffect(() => {
   //   if (data) {
   //     setProjects(data.projects);
@@ -51,7 +53,7 @@ function App() {
         <Sidebar projects={projects} onProjectSelect={handleProjectSelect} />
        <Switch>
             {/* <Route path="/project/:id" component={Board}/> */}
-          <Route path="/project/:id">
+          <Route path= '/project/:id'>
             <Board selectedProject={selectedProject} />
           </Route>
        </Switch>

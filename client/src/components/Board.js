@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, lazy, Suspense  } from 'react'
 import { createPortal } from 'react-dom';
 import Column from './Column'
-import Modal from './Modals/Modal';
 import NewCol from './Modals/NewCol';
 import TopBar from './TopBar';
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from 'react-router-dom';
+
 
 const GET_PROJECT = gql`
   query($id: ID!){
@@ -25,7 +25,7 @@ const GET_PROJECT = gql`
 `
 
 
-const Board = () => {
+const Board = (props) => {
 
   const bg = {
     overlay: {
@@ -38,11 +38,17 @@ const Board = () => {
     const [showOverlay, setShowOverlay] = useState(false);
 
     const { id } = useParams();
+    const { selectedProject } = props;
 
-    const { loading, error, data } = useQuery(GET_PROJECT, {
-      variables: {id},
+    const { loading, error, data, refetch } = useQuery(GET_PROJECT, {
+      variables: {id: selectedProject},
     });
-  
+    console.log(id);
+
+    useEffect(() => {
+      refetch({id});
+    }, [id, refetch]);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :</p>;
   
