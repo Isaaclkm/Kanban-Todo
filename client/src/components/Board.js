@@ -63,7 +63,7 @@ const Board = (props) => {
         <TopBar columns = {columns}/>
 
 
-              {/* Columns Section Starts*/}
+              {/* Columns Section Start*/}
         <div className='Column  w-full min-h-4/5 bg-third flex flex-row flex-1 overflow-x-scroll overflow-y-auto'>
           
            {columns.map(column => (
