@@ -59,18 +59,22 @@ const Board = (props) => {
 
 // Apollo client Ends
   return (
-    <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5 min-h-screen'>
-        <TopBar columns = {columns}/>
+  <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5 min-h-screen'>
+       {selectedProject
+        ?<TopBar columns = {columns}/>
+        :<TopBar/>
+      }
 
 
               {/* Columns Section*/}
         <div className='Column  w-full min-h-4/5 bg-third flex flex-row flex-1 overflow-x-scroll overflow-y-auto'>
           
-           {columns.map(column => (
-           <Column key={column._id} column={column} />
-           ))}
+          
+          {columns.map(column => (
+          <Column key={column._id} column={column} />
+          ))}
 
-             <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
+            <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
                 
               <button className='rounded-full bg-third w-64 h-12 text-morado font-semibold'  onClick={() => {
               setShowColModal(true);
@@ -82,7 +86,8 @@ const Board = (props) => {
               document.body
               )}
 
-             </div>
+            </div>
+            
         </div>
          {/* Column Ends */}
 
@@ -98,8 +103,10 @@ const Board = (props) => {
            />
           )}
           {/* Overlay Ends */}
-    </div>
     
+           
+           </div> 
+          
   )
 }
 

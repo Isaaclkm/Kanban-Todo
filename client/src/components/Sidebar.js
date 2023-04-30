@@ -15,7 +15,7 @@ const Sidebar = ({projects, onProjectSelect }) => {
 
   
   return (
-    <div className="bg-primary w-1/5 flex-shrink-0 flex-col flex-start border-x	border-slate-300">
+    <div className="bg-primary w-1/5 h-screen flex-shrink-0 flex-col flex-start border-x	border-slate-300">
 
             <div className="image-container h-24  p-7">
               <img src={Logo} alt="logo" className="flex items-center justify-center h-6 w-36"></img>

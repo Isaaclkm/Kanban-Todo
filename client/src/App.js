@@ -2,8 +2,8 @@ import './App.css';
 import CardItem from './components/CardItem';
 import Sidebar from './components/Sidebar';
 import Board from './components/Board'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import {Switch} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 import { useQuery, gql } from '@apollo/client';
 import { useEffect, useState } from 'react';
@@ -31,17 +31,6 @@ function App() {
     setSelectedProject(projectId);
   };
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setProjects(data.projects);
-  //   }
-  // }, [data]);
-
-  // const updateProjects = (newProject) => {
-  //   setProjects([...projects, newProject]);
-  // };
-
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :</p>;
 
@@ -51,12 +40,13 @@ function App() {
     <Router>
       <div className="App flex flex-row flex-auto overflow-clip h-full">
         <Sidebar projects={projects} onProjectSelect={handleProjectSelect} />
-       <Switch>
+
+       <Routes>
             {/* <Route path="/project/:id" component={Board}/> */}
-          <Route path= '/project/:id'>
-            <Board selectedProject={selectedProject} />
-          </Route>
-       </Switch>
+          <Route path= '/project/:id' element={<Board selectedProject={selectedProject} />} />
+            {/* <Board selectedProject={selectedProject} /> */}
+          {/* </Route> */}
+       </Routes>
       </div>
     </Router>
   );
