@@ -2,6 +2,8 @@ import './App.css';
 import CardItem from './components/CardItem';
 import Sidebar from './components/Sidebar';
 import Board from './components/Board'
+import DefBoard from './components/DefBoard';
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
@@ -41,7 +43,9 @@ function App() {
       <div className="App flex flex-row flex-auto overflow-clip h-full">
         <Sidebar projects={projects} onProjectSelect={handleProjectSelect} />
         {/* <Board/> */}
-
+        <Routes>          
+          <Route path= '/' element={<DefBoard />} />
+       </Routes>
        <Routes>          
           <Route path= '/project/:id' element={<Board selectedProject={selectedProject} />} />
       </Routes>

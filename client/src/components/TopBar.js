@@ -7,7 +7,7 @@ const TopBar = ({columns}) => {
     const [showOverlay, setShowOverlay] = useState(false);
 
   return (
-    <div className='px-7 Top min-h-1/5 max-h-24 w-full flex flew-row justify-between items-center bg-primary grow borderborder-slate-300'>
+    <div className='px-7 Top min-h-1/5 max-h-24 w-full flex flew-row justify-between items-center bg-primary grow border-y	border-slate-30'>
             <h1 className='text-slate-100 text-2xl font-semibold'>Platform Launch</h1>
             <button className='rounded-full bg-morado w-40 h-12 text-slate-100 font-semibold' onClick={() => {
               setShowModal(true);
