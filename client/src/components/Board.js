@@ -39,7 +39,7 @@ const Board = (props) => {
 
     const { id } = useParams();
     const { selectedProject } = props;
-
+    
     const { loading, error, data, refetch } = useQuery(GET_PROJECT, {
       variables: {id: selectedProject},
     });
@@ -49,7 +49,13 @@ const Board = (props) => {
       refetch({id});
     }, [id, refetch]);
 
-    if (loading) return <p>Loading...</p>;
+      
+    if (loading) return ( 
+      <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5 min-h-screen'>
+        <TopBar/>
+        <div className='Column  w-full min-h-4/5 bg-third flex flex-row flex-1 overflow-x-scroll overflow-y-auto'></div>
+      </div>
+    );
     if (error) return <p>Error :</p>;
   
     const { _id, name, columns } = data.project;
@@ -70,25 +76,43 @@ const Board = (props) => {
         <div className='Column  w-full min-h-4/5 bg-third flex flex-row flex-1 overflow-x-scroll overflow-y-auto'>
           
           
-          {columns.map(column => (
-          <Column key={column._id} column={column} />
-          ))}
+              {selectedProject ? (
+              <>
+              {columns.map(column => (
+                 <Column key={column._id} column={column} />
+                 ))}
 
             <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
-                
-              <button className='rounded-full bg-third w-64 h-12 text-morado font-semibold'  onClick={() => {
-              setShowColModal(true);
-              setShowOverlay(true);
-              }}>+New Column</button>
+             <button
+                className="rounded-full bg-third w-64 h-12 text-morado font-semibold"
+                onClick={() => {
+                   setShowColModal(true);
+                   setShowOverlay(true);
+                  }}
+                >
+                +New Column
+              </button>
 
-              {showColModal && createPortal(
-              <NewCol onClose={() => {setShowColModal(!showColModal); setShowOverlay(!showOverlay)}} />,
-              document.body
-              )}
-
+            {showColModal &&
+              createPortal(
+                <NewCol
+                  onClose={() => {
+                    setShowColModal(!showColModal);
+                    setShowOverlay(!showOverlay);
+                  }}
+                />,
+                document.body
+                )}
             </div>
-            
-        </div>
+           </>
+         ) : (
+           <div>
+              <p>No board yet</p>
+           </div>
+         )}
+
+      </div>
+  
          {/* Column Ends */}
 
         {/* Overlay style */}

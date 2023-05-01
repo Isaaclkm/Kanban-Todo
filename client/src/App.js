@@ -40,13 +40,11 @@ function App() {
     <Router>
       <div className="App flex flex-row flex-auto overflow-clip h-full">
         <Sidebar projects={projects} onProjectSelect={handleProjectSelect} />
+        {/* <Board/> */}
 
-       <Routes>
-            {/* <Route path="/project/:id" component={Board}/> */}
+       <Routes>          
           <Route path= '/project/:id' element={<Board selectedProject={selectedProject} />} />
-            {/* <Board selectedProject={selectedProject} /> */}
-          {/* </Route> */}
-       </Routes>
+      </Routes>
       </div>
     </Router>
   );
