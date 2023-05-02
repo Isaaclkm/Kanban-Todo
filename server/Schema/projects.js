@@ -12,7 +12,7 @@ extend type Query {
   }
   
   type Mutation {
-    createProject(name: String!, description: String!): Project
+    createProject(name: String!, description: String): Project
     updateProject(_id: ID!, name: String!, description: String): Project
     deleteProject(_id: ID!): Project
   }
@@ -42,10 +42,9 @@ export const resolvers = {
   },
 
   Mutation: {
-    createProject: async (_, { name, description }) => {
+    createProject: async (_, { name }) => {
       const project = new Project({
         name,
-        description,
       });
       const savedProject = project.save();
       return savedProject;

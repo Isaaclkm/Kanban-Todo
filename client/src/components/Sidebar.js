@@ -13,6 +13,7 @@ const Sidebar = ({projects, onProjectSelect }) => {
   const [showOverlay, setShowOverlay] = useState(false);
 
 
+
   
   return (
     <div className="bg-primary w-1/5 h-screen flex-shrink-0 flex-col flex-start border-x	border-slate-300">

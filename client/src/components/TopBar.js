@@ -6,6 +6,8 @@ const TopBar = ({columns}) => {
     const [showModal, setShowModal] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
 
+  
+
   return (
     <div className='px-7 Top min-h-1/5 max-h-24 w-full flex flew-row justify-between items-center bg-primary grow border-y	border-slate-30'>
             <h1 className='text-slate-100 text-2xl font-semibold'>Platform Launch</h1>
