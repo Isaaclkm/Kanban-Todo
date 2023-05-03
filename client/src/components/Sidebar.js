@@ -8,7 +8,7 @@ import NewBoard from './Modals/NewBoard';
 import { Link, useParams } from 'react-router-dom';
 
 
-const Sidebar = ({projects, onProjectSelect }) => {
+const Sidebar = ({projects, onProjectSelect, GET_PROJECTS, refetchProjects }) => {
   const [showBoardModal, setShowBoardModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -45,13 +45,12 @@ const Sidebar = ({projects, onProjectSelect }) => {
                     + Create New Board
                 </li> 
                 </button> 
-              {showBoardModal && createPortal(
-              <NewBoard onClose={() => {
-                setShowBoardModal(!showBoardModal); 
-                setShowOverlay(!showOverlay)
-              }} />,
-              document.body
-              )}
+               {showBoardModal ? (
+                <NewBoard onClose={() => {
+                  setShowBoardModal(false);
+                  setShowOverlay(false);
+                }} GET_PROJECTS={GET_PROJECTS} />
+                 ) : null}
 
             </ul>
 

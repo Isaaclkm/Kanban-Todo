@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import './Modal.css'
 import { useMutation, gql } from '@apollo/client';
 
-const NewBoard = ({ onClose }) => {
+const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+
 
   const CREATE_PROJECT_MUTATION = gql`
     mutation createProject($name: String!, $description: String!) {
@@ -15,7 +16,13 @@ const NewBoard = ({ onClose }) => {
     }
   `;
 
-  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION);
+  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION,{
+    refetchQueries: [{ query: GET_PROJECTS }],
+  onCompleted: (data) => {
+    console.log(data);
+    refetchProjects();
+    }
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();

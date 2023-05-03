@@ -32,6 +32,9 @@ function App() {
   const handleProjectSelect = (projectId) => {
     setSelectedProject(projectId);
   };
+  const refetchProjects = () => {
+    refetch();
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :</p>;
@@ -41,7 +44,7 @@ function App() {
   return (
     <Router>
       <div className="App flex flex-row flex-auto overflow-clip h-full">
-        <Sidebar projects={projects} onProjectSelect={handleProjectSelect} />
+        <Sidebar projects={projects} onProjectSelect={handleProjectSelect} GET_PROJECTS={GET_PROJECTS} refetchProjects={refetchProjects}/>
         {/* <Board/> */}
         <Routes>          
           <Route path= '/' element={<DefBoard />} />
