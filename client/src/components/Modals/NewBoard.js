@@ -42,7 +42,7 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
   };
 
   return (
-    <div className='Colmodal modalOverlay overflow-y-hidden overflow-x-hidden bg-primary p-6 text-slate-100 scrollbar-hide md:scrollbar-default'>
+    <div className='Bormodal modalOverlay overflow-y-hidden overflow-x-hidden bg-primary p-6 text-slate-100 scrollbar-hide md:scrollbar-default'>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-3 mb-6 text-slate-100 ">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">

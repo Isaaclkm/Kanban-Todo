@@ -1,5 +1,4 @@
 import './App.css';
-import CardItem from './components/CardItem';
 import Sidebar from './components/Sidebar';
 import Board from './components/Board'
 import DefBoard from './components/DefBoard';

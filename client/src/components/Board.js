@@ -99,7 +99,7 @@ const Board = (props) => {
                   onClose={() => {
                     setShowColModal(!showColModal);
                     setShowOverlay(!showOverlay);
-                  }}
+                  }} projectId = {id}
                 />,
                 document.body
                 )}
