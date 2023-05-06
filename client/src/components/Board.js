@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense  } from 'react'
+import React, { useEffect, useState} from 'react'
 import { createPortal } from 'react-dom';
 import Column from './Column'
 import NewCol from './Modals/NewCol';
@@ -38,7 +38,7 @@ const Board = (props) => {
     const [showOverlay, setShowOverlay] = useState(false);
 
     const { id } = useParams();
-    const { selectedProject } = props;
+    const { selectedProject} = props;
     
     const { loading, error, data, refetch } = useQuery(GET_PROJECT, {
       variables: {id: selectedProject},
@@ -99,7 +99,7 @@ const Board = (props) => {
                   onClose={() => {
                     setShowColModal(!showColModal);
                     setShowOverlay(!showOverlay);
-                  }} projectId = {id}
+                  }} GET_PROJECT={GET_PROJECT}
                 />,
                 document.body
                 )}

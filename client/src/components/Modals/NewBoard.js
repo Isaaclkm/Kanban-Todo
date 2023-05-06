@@ -17,11 +17,11 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
   `;
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION,{
-    refetchQueries: [{ query: GET_PROJECTS }],
-  onCompleted: (data) => {
-    console.log(data);
-    refetchProjects();
-    }
+      refetchQueries: [{ query: GET_PROJECTS }],
+      onCompleted: (data) => {
+          console.log(data);
+          refetchProjects();
+       }
   });
 
   const handleSubmit = (e) => {

@@ -49,7 +49,7 @@ function App() {
           <Route path= '/' element={<DefBoard />} />
        </Routes>
        <Routes>          
-          <Route path= '/project/:id' element={<Board selectedProject={selectedProject} />} />
+          <Route path= '/project/:id' element={<Board selectedProject={selectedProject}/>} />
       </Routes>
       </div>
     </Router>
