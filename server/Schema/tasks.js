@@ -20,6 +20,7 @@ extend type Query {
     _id: ID!
     title: String!
     project: Project
+    description: String
     column: Column
     createdAt: String
     updatedAt: String

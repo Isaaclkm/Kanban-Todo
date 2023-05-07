@@ -1,7 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Modal.css'
 
 const Modal = ({onClose, columns}) => {
+    const [subtasks, setSubtasks] = useState([]);
+
+    const handleAddSubtask = () => {
+        setSubtasks([...subtasks, '']);
+      };
+    
+      const handleSubtaskChange = (index, value) => {
+        const updatedSubtasks = [...subtasks];
+        updatedSubtasks[index] = value;
+        setSubtasks(updatedSubtasks);
+      };
+    
+      const handleDeleteSubtask = (index) => {
+        const updatedSubtasks = [...subtasks];
+        updatedSubtasks.splice(index, 1);
+        setSubtasks(updatedSubtasks);
+      };
+    
+      const renderSubtaskInputs = () => {
+        return subtasks.map((subtask, index) => (
+          <div key={index} className="flex items-center w-96 text-slate-100 mb-2">
+            <input
+              className="mb-1 w-10/12 appearance-none block bg-primary border border-gray focus:border-morado focus:outline-none rounded py-2 px-3 leading-tight"
+              type="text"
+              placeholder={`Subtask ${index + 1}`}
+              value={subtask}
+              onChange={(e) => handleSubtaskChange(index, e.target.value)}
+            />
+            <button
+              className="text-gray-500 font-bold w-2/12 self-center"
+              type="button"
+              onClick={() => handleDeleteSubtask(index)}
+            >
+              X
+            </button>
+          </div>
+        ));
+      };
+    
 
     const selectOptions = columns.map((column) => (
         <option key={column._id} value={column._id}>
@@ -40,8 +79,16 @@ const Modal = ({onClose, columns}) => {
             <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-first-name">
                 Subtasks
             </label>
-            <input class="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight  " id="grid-first-name" type="text" placeholder=""/>
-            <button className='rounded-full bg-morado w-96 h-12 text-slate-100 font-semibold'> + Add new SubTask</button>
+            {/* <input class="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight  " 
+            id="subtask-input" 
+            type="text" 
+            placeholder=""
+            /> */}
+            {renderSubtaskInputs()}
+            <button className='rounded-full bg-morado w-96 h-12 text-slate-100 font-semibold'
+             onClick={handleAddSubtask}
+             type="button"
+             > + Add new SubTask</button>
             </div>
         </div>
 
