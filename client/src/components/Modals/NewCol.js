@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 
 
-const NewCol = ({onClose, GET_PROJECT}) => {
+const NewCol = ({onClose}) => {
 const [title, setTitle] = useState('');
 const {id} = useParams()
 // const [projectId, setProjectId] = useState(id)

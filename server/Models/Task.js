@@ -8,6 +8,9 @@ const TaskSchema = new mongoose.Schema({
     description: {
         type: String
     },
+	subtasks: {
+		type: [String]
+	},
 	columnId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Column',

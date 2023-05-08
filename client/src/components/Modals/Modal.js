@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 import './Modal.css'
+import { gql, useMutation } from '@apollo/client';
+
 
 const Modal = ({onClose, columns}) => {
-    const [subtasks, setSubtasks] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [subtasks, setSubtasks] = useState([]);
+  const [columnId, setColumnId] = useState('');
 
     const handleAddSubtask = () => {
         setSubtasks([...subtasks, '']);
@@ -48,35 +53,99 @@ const Modal = ({onClose, columns}) => {
         </option>
       ));
 
+    const CREATE_TASK_MUTATION = gql`
+    mutation($title: String!, $columnId: ID!, $description: String!){
+      createTask(title: $title, columnId: $columnId, description: $description) {
+        _id
+        title
+      }
+    }`
+
+const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
+  update: (cache, { data: { createTask } }) => {
+    cache.modify({
+      id: cache.identify({ __typename: 'Column', _id: columnId }),
+      fields: {
+        tasks(existingTasks = []) {
+          const newTaskRef = cache.writeFragment({
+            data: createTask,
+            fragment: gql`
+              fragment NewTask on Task {
+                _id
+                title
+              }
+            `
+          });
+          return [...existingTasks, newTaskRef];
+        }
+      }
+    });
+  },
+  onCompleted: (data) => {
+    console.log(data);
+  }
+});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // const formData = new FormData(e.target);
+    // const title = formData.get('title');
+    // const description = formData.get('description');
+    // const columnId = formData.get('status')
+
+    createTask({
+      variables: {
+        title,
+        columnId,
+        description,
+        subtasks
+      }
+    });
+
+    onClose();
+  };
+
   return (
     <div className='modal modalOverlay overflow-y-scroll overflow-x-hidden bg-primary p-6 text-slate-100 scrollbar-hide md:scrollbar-default'>
         <h1 className='py-2.5 text-lg font-bold'>Add new Task</h1>
 
-     <form class="w-full max-w-lg">
+     <form className="w-full max-w-lg" onSubmit={handleSubmit}>
 
-        <div class="flex flex-wrap -mx-3 mb-6 text-slate-100 ">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-first-name">
+        <div className="flex flex-wrap -mx-3 mb-6 text-slate-100 ">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block capitalize tracking-wide text-xs font-bold mb-2" htmlFor="title">
                 Title
             </label>
-            <input class="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight  " id="grid-first-name" type="text" placeholder=""/>
+            <input className="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight  " 
+            id="title" 
+            type="text" 
+            name="title" 
+            placeholder="" 
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)}/>
             </div>
         </div>
 
 
-        <div class="flex flex-wrap -mx-3 mb-6 text-slate-100">
-            <div class="w-full px-3">
-            <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-password">
+        <div className="flex flex-wrap -mx-3 mb-6 text-slate-100">
+            <div className="w-full px-3">
+            <label className="block capitalize tracking-wide text-xs font-bold mb-2" htmlFor="description">
                 Description
             </label>
-            <textarea className="w-96 h-24 px-3 py-2 mb-4 leading-5 bg-primary border border-gray focus:border-morado focus:outline-none rounded-lg resize-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300" placeholder='e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little'></textarea>
+            <textarea className="w-96 h-24 px-3 py-2 mb-4 leading-5 bg-primary border border-gray focus:border-morado focus:outline-none rounded-lg resize-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300" placeholder='e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little'
+             id="description" 
+             type="text" 
+             name="description" 
+             value={description} 
+             onChange={(e) => setDescription(e.target.value)}></textarea>
             </div>
         </div>
 
 
-        <div class="flex flex-wrap -mx-3 mb-6 text-slate-100">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-first-name">
+        <div className="flex flex-wrap -mx-3 mb-6 text-slate-100">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block capitalize tracking-wide text-xs font-bold mb-2" htmlFor="subtasks">
                 Subtasks
             </label>
             {/* <input class="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight  " 
@@ -92,27 +161,30 @@ const Modal = ({onClose, columns}) => {
             </div>
         </div>
 
-
-        <div class="flex flex-wrap -mx-3 mb-2 text-slate-100">
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-state">
-                State
+       {/* Status Select */}
+        <div className="flex flex-wrap -mx-3 mb-2 text-slate-100">
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <label className="block capitalize tracking-wide text-xs font-bold mb-2" htmlFor="status">
+                Status
             </label>
-            <div class="relative w-96">
-                <select class="block appearance-none w-96 bg-primary border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none text-slate-100" id="grid-state">
-                {/* <option>Todo</option>
-                <option>Doing</option>
-                <option>Done</option> */}
+            <div className="relative w-96">
+                <select class="block appearance-none w-96 bg-primary border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none text-slate-100" 
+                id="status"
+                value={columnId}
+                onChange={(e) => setColumnId(e.target.value)}
+                >
+                 <option value="">Select a column</option>
                  {selectOptions}
                 </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 ">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 ">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                 </div>
             </div>
             </div>
             
         </div>
-        <button className='rounded-full bg-white w-96 h-12 text-morado font-semibold' onClick={onClose}>Create new Task</button>
+        {/* Status Select */}
+        <button className='rounded-full bg-white w-96 h-12 text-morado font-semibold' type='submit'>Create new Task</button>
 
         </form>
 

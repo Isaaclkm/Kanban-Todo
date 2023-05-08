@@ -10,12 +10,15 @@ extend type Query {
     task(_id: ID!): Task
   }
   type Mutation {
-    createTask(title: String!, columnId: ID!): Task
+    createTask(title: String!, columnId: ID!, description: String!, subtasks: [SubtaskInput]): Task
     updateTask(_id: ID!, title: String!, columnId: ID!): Task
     deleteTask(_id: ID!): Task
   }
 
-
+  type Tasks{
+    title: String!
+    createdAt: String
+  }
   type Task {
     _id: ID!
     title: String!
@@ -25,7 +28,9 @@ extend type Query {
     createdAt: String
     updatedAt: String
   }
-
+  input SubtaskInput {
+  title: String!
+}
 `
 
 export const resolvers = {
@@ -39,16 +44,21 @@ export const resolvers = {
     },
 
     Mutation: {
-      createTask: async (_, { title, columnId }) => {
+      createTask: async (_, { title, columnId, description, subtasks }) => {
         try {
           const columnFound = await Column.findById(columnId);
           if (!columnFound) {
             throw new Error("Column not found");
           }
-      
+          const subtaskInputs = subtasks || [];
+
           const task = new Task({
             title,
             columnId,
+            description,
+            subtasks: subtaskInputs.map((subtask) => ({
+              title: subtask.title,
+            })),
           });
       
           await task.save();
