@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CardItem from './CardItem'
+import TaskModal from './Modals/TaskModal';
+import { createPortal } from 'react-dom';
 
 
 
 const  Column = ({ column }) => {
   const { title, tasks } = column;
+
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showOverlay, setShowOverlay] = useState(false); 
+
+  const handleCardItemClick = (task) => {
+    setSelectedTask(task);
+  };
+
 
   return (
     <div className=''>
@@ -14,17 +25,27 @@ const  Column = ({ column }) => {
              <span class="uppercase text-gray-400 tracking-widest">{title} </span>
           </div>
 
-      {tasks.map(task => (
-      <CardItem key={task._id} task={task} />
-         ))}
-{/*                    
-          <CardItem/>
-          <CardItem/>
-          <CardItem/>
-          <CardItem/>
-          <CardItem/>
-          <CardItem/>
-   */}
+         {tasks.map(task => (
+          <CardItem key={task._id} task={task} onClick={handleCardItemClick}/>
+            ))}
+
+         {showTaskModal && createPortal(
+             <TaskModal onClose={() => {setShowTaskModal(!showTaskModal); setShowOverlay(!showOverlay)}} />,
+            document.body
+         )}
+
+
+          {/* Overlay style */}
+          {showOverlay && (
+          <div
+            className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
+            onClick={() => {
+              setShowTaskModal(false);
+              setShowOverlay(false);
+             }}
+           />
+          )}
+          {/* Overlay Ends */}
 
       </div>
 
