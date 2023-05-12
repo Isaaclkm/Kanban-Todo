@@ -26,7 +26,9 @@ const  Column = ({ column }) => {
           </div>
 
          {tasks.map(task => (
+          <button>
           <CardItem key={task._id} task={task} onClick={handleCardItemClick}/>
+          </button>
             ))}
 
          {showTaskModal && createPortal(
