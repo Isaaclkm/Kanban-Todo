@@ -31,10 +31,7 @@ const  Column = ({ column }) => {
     
             ))}
 
-         {showTaskModal && createPortal(
-             <TaskModal onClose={() => {setShowTaskModal(!showTaskModal); setShowOverlay(!showOverlay)}} />,
-            document.body
-         )}
+       
 
 
 
