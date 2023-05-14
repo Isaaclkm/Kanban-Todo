@@ -9,15 +9,16 @@ const Modal = ({onClose, columns}) => {
   const [subtasks, setSubtasks] = useState([]);
   const [columnId, setColumnId] = useState('');
 
-    const handleAddSubtask = () => {
-        setSubtasks([...subtasks, '']);
-      };
+  const handleAddSubtask = () => {
+    setSubtasks([...subtasks, { title: '' }]);
+  };
     
-      const handleSubtaskChange = (index, value) => {
-        const updatedSubtasks = [...subtasks];
-        updatedSubtasks[index] = value;
-        setSubtasks(updatedSubtasks);
-      };
+  const handleSubtaskChange = (index, value) => {
+    const updatedSubtasks = [...subtasks];
+    updatedSubtasks[index] =  {title: `${value}`} ;
+    setSubtasks(updatedSubtasks);
+    console.log(subtasks)
+  };
     
       const handleDeleteSubtask = (index) => {
         const updatedSubtasks = [...subtasks];
@@ -32,7 +33,7 @@ const Modal = ({onClose, columns}) => {
               className="mb-1 w-10/12 appearance-none block bg-primary border border-gray focus:border-morado focus:outline-none rounded py-2 px-3 leading-tight"
               type="text"
               placeholder={`Subtask ${index + 1}`}
-              value={subtask}
+              value={subtask.title}
               onChange={(e) => handleSubtaskChange(index, e.target.value)}
             />
             <button
@@ -54,8 +55,8 @@ const Modal = ({onClose, columns}) => {
       ));
 
     const CREATE_TASK_MUTATION = gql`
-    mutation($title: String!, $columnId: ID!, $description: String!){
-      createTask(title: $title, columnId: $columnId, description: $description) {
+    mutation($title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
+      createTask(title: $title, columnId: $columnId, description: $description,  subtasks: $subtasks) {
         _id
         title
       }
@@ -88,7 +89,7 @@ const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(subtasks)
     // const formData = new FormData(e.target);
     // const title = formData.get('title');
     // const description = formData.get('description');
@@ -101,6 +102,7 @@ const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
         description,
         subtasks
       }
+      
     });
 
     onClose();

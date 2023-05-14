@@ -24,13 +24,18 @@ extend type Query {
     title: String!
     project: Project
     description: String
+    subtasks: [Subtask]
     column: Column
     createdAt: String
     updatedAt: String
   }
+  type Subtask {
+  title: String!
+}
   input SubtaskInput {
   title: String!
 }
+
 `
 
 export const resolvers = {
@@ -51,13 +56,13 @@ export const resolvers = {
             throw new Error("Column not found");
           }
           const subtaskInputs = subtasks || [];
-
+          console.log(subtaskInputs)
           const task = new Task({
             title,
             columnId,
             description,
             subtasks: subtaskInputs.map((subtask) => ({
-              title: subtask.title,
+              title: subtask.title
             })),
           });
       

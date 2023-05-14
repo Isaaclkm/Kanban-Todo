@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
 
+
+const SubtaskSchema = new mongoose.Schema({
+	title: {
+	  type: String,
+	  required: true,
+	},
+  });
+
 const TaskSchema = new mongoose.Schema({
 	title: {
 		type: String,
@@ -8,9 +16,7 @@ const TaskSchema = new mongoose.Schema({
     description: {
         type: String
     },
-	subtasks: {
-		type: [String]
-	},
+	subtasks:  [SubtaskSchema],
 	columnId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Column',
