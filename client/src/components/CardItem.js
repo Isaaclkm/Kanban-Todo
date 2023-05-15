@@ -24,7 +24,7 @@ const CardItem = ({task}) => {
       </div>
 
       {showTaskModal && createPortal(
-        <TaskModal onClose={() => {setShowTaskModal(!showTaskModal); setShowOverlay(!showOverlay)}} />,
+        <TaskModal task={task} onClose={() => {setShowTaskModal(!showTaskModal); setShowOverlay(!showOverlay)}} />,
       document.body
       )}
 

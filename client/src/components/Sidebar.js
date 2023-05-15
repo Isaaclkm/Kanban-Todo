@@ -8,7 +8,7 @@ import NewBoard from './Modals/NewBoard';
 import { Link, useParams } from 'react-router-dom';
 
 
-const Sidebar = ({projects, onProjectSelect, GET_PROJECTS, refetchProjects }) => {
+const Sidebar = ({projects, onProjectSelect, GET_PROJECTS }) => {
   const [showBoardModal, setShowBoardModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 

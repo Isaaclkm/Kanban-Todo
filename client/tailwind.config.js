@@ -3,6 +3,7 @@ const colors = {
   primary: '#3E3F4E',
   secondary: '#E4EBFA',
   third: '#2B2C37',
+  darker: '#20212C',
   morado: '#635FC7',
   focus: '#9F7AEA', // set the color of the border when focused
 }

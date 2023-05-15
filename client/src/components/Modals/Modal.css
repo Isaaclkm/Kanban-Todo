@@ -31,3 +31,15 @@
     height: 25rem;
     z-index: 100;
   }
+
+  
+.taskModal{
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28rem;
+  height: 30rem;
+  z-index: 100;
+}
