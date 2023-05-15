@@ -22,10 +22,6 @@ const TopBar = ({columns}) => {
       console.log("Edit Board option clicked");
     };
   
-    const deleteBoard = () => {
-      // Code to handle the "Delete Board" option
-      console.log("Delete Board option clicked");
-    };
   
 
   return (
@@ -69,24 +65,25 @@ const TopBar = ({columns}) => {
             )}
             {/* New Board Modal ends */}
 
+
             {/* Delete Modal starts */}
             {showDeleteBoard && createPortal(
              <DeleteBoard onClose={() => {setDeleteBoard(!showDeleteBoard); setShowOverlay(!showOverlay)}} columns={columns} />,
             document.body
             )}
+            {/* Delete MOdal Ends */}
 
-
-             {/* Overlay style */}
-         {showOverlay && (
-          <div
-            className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
-            onClick={() => {
+          {/* Overlay style */}
+           {showOverlay && (
+            <div
+              className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
+              onClick={() => {
               setShowModal(false);
               setShowOverlay(false);
               setDeleteBoard(false);
              }}
            />
-          )}
+           )}
           {/* Overlay Ends */}
    </div>
   )

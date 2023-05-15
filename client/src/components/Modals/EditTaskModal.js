@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useMutation, gpl } from '@apollo/client';
 import './Modal.css'
-import { gql, useMutation } from '@apollo/client';
+import React from 'react'
+import { useParams } from 'react-router-dom';
 
-
-const Modal = ({onClose, columns, task}) => {
+const EditTaskModal = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subtasks, setSubtasks] = useState([]);
@@ -62,6 +62,17 @@ const Modal = ({onClose, columns, task}) => {
         ));
     };
     
+    const {id} = useParams();
+
+  const GET_PROJECT = gql`
+    query ($id: ID!){
+      project(_id: $id) {
+       columns {
+        _id
+        title
+      }
+    }
+  }`;
 
     const selectOptions = columns.map((column) => (
         <option key={column._id} value={column._id}>
@@ -69,12 +80,12 @@ const Modal = ({onClose, columns, task}) => {
         </option>
       ));
 
-    const CREATE_TASK_MUTATION = gql`
-    mutation($title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
-      createTask(title: $title, columnId: $columnId, description: $description,  subtasks: $subtasks) {
+    const UPDATE_TASK_MUTATION = gql`
+    mutation($id: ID!, $title: String!, $columnId: ID!, $subtasks: [SubtaskInput]){
+       updateTask(_id: $id, title: $title, columnId: $columnId, subtasks: $subtasks) {
         _id
         title
-      }
+       }
     }`
 
     const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
@@ -199,4 +210,4 @@ const Modal = ({onClose, columns, task}) => {
   )
 }
 
-export default Modal
+export default EditTaskModal

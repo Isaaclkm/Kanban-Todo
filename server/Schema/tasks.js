@@ -11,7 +11,7 @@ extend type Query {
   }
   type Mutation {
     createTask(title: String!, columnId: ID!, description: String!, subtasks: [SubtaskInput]): Task
-    updateTask(_id: ID!, title: String!, columnId: ID!): Task
+    updateTask(_id: ID!, title: String!, columnId: ID!, subtasks: [SubtaskInput]): Task
     deleteTask(_id: ID!): Task
   }
 
@@ -103,7 +103,7 @@ export const resolvers = {
           throw new Error(error);
         }
       },
-      updateTask: async (_, { _id, title }) => {
+      updateTask: async (_, { _id, title, columnId, description, subtasks  }) => {
         const taskId = _id
         try {
           const task = await Task.findById(taskId);
@@ -112,6 +112,9 @@ export const resolvers = {
           }
       
           task.title = title;
+          task.columnId = columnId
+          task.description = description
+          task.subtasks = subtasks
           const updatedTask = await task.save();
       
           return updatedTask;

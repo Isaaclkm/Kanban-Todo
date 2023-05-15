@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import CardItem from './CardItem'
-import TaskModal from './Modals/TaskModal';
-import { createPortal } from 'react-dom';
+
 
 
 

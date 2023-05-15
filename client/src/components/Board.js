@@ -76,10 +76,12 @@ const Board = (props) => {
         <div className='Column  w-full min-h-4/5 bg-third flex flex-row flex-1 overflow-x-scroll overflow-y-auto'>
           
           
-              {selectedProject ? (
+              {selectedProject || id ? (
               <>
               {columns.map(column => (
-                 <Column key={column._id} column={column} />
+                <ColumnsContext.Provider value={columns}>
+                 <Column key={column._id} column={column}/>
+                 </ColumnsContext.Provider>
                  ))}
 
             <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">
