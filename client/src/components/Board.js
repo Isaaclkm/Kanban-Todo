@@ -5,6 +5,7 @@ import NewCol from './Modals/NewCol';
 import TopBar from './TopBar';
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from 'react-router-dom';
+import ColumnsContext from './ColumnsContext';
 
 
 const GET_PROJECT = gql`
@@ -18,6 +19,10 @@ const GET_PROJECT = gql`
         tasks {
           _id
           title
+          description
+          subtasks{
+            title
+          }
         }
       }
     }
@@ -80,8 +85,8 @@ const Board = (props) => {
               <>
               {columns.map(column => (
                 <ColumnsContext.Provider value={columns}>
-                 <Column key={column._id} column={column}/>
-                 </ColumnsContext.Provider>
+                  <Column key={column._id} column={column}/>
+                </ColumnsContext.Provider>
                  ))}
 
             <div className="Button w-72 h-full bg-third child:ml-4 child:mb-5 flex flex-col justify-center content-center">

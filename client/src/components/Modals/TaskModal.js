@@ -1,21 +1,20 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './Modal.css'
 import { gql, useQuery } from '@apollo/client';
 import { createPortal } from 'react-dom';
 import DeleteTask from './DeleteTask';
 import Modal from './Modal';
+import ColumnsContext from '../ColumnsContext';
+
 
 const TaskModal = ({ onClick, task }) => {  
     const columns = useContext(ColumnsContext);
+
     const [showDeleteTask, setShowDeleteTask] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
 
     const [isOpen, setIsOpen] = useState(false)
     const [openEdit, setOpenEdit] = useState(false);
-
-    const EditTaskModal = ({ onClose, task }) => {
-        return <Modal onClose={onClose} columns={columns} task={task} />;
-      };
     
     const toggleDropdown = () =>{
      setIsOpen(!isOpen)
@@ -74,7 +73,8 @@ const TaskModal = ({ onClick, task }) => {
               {isOpen && (
                    <div className="dropdown-menu absolute bg-morado right-1 w-24 h-24 flex flex-col items-center justify-evenly rounded-lg text-slate-100">
                       <a href="#" onClick={()=> {
-                        setOpenEdit(!openEdit)
+                        setOpenEdit(!openEdit);
+                        setShowOverlay(!showOverlay)                        
                       }}> 
                       Edit Task
                       </a>
@@ -146,8 +146,8 @@ const TaskModal = ({ onClick, task }) => {
 
          {/* Start Edit Modal  */}
          {openEdit && createPortal(
-             <EditTaskModal onClose={() => {setOpenEdit(!openEdit); setShowOverlay(!showOverlay)}} 
-             task={task} 
+             <Modal onClose={() => {setOpenEdit(!openEdit); setShowOverlay(!showOverlay)}} 
+             columns={columns} task={task}
              />,
              document.body
             )}

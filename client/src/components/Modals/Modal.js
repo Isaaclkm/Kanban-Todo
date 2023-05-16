@@ -4,12 +4,14 @@ import { gql, useMutation } from '@apollo/client';
 
 
 const Modal = ({onClose, columns, task}) => {
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subtasks, setSubtasks] = useState([]);
   const [columnId, setColumnId] = useState('');
 
   useEffect(() => {
+    console.log(task)
     if (task) {
       setTitle(task.title);
       setDescription(task.description);
@@ -30,9 +32,11 @@ const Modal = ({onClose, columns, task}) => {
     
   const handleSubtaskChange = (index, value) => {
     const updatedSubtasks = [...subtasks];
-    updatedSubtasks[index] =  {title: `${value}`} ;
+    updatedSubtasks[index] = {
+      ...updatedSubtasks[index], // copy the existing subtask object
+      title: value // update the title property
+    };
     setSubtasks(updatedSubtasks);
-    console.log(subtasks)
   };
     
    const handleDeleteSubtask = (index) => {
@@ -42,6 +46,8 @@ const Modal = ({onClose, columns, task}) => {
     };
     
     const renderSubtaskInputs = () => {
+        if (!subtasks) return null;
+
         return subtasks.map((subtask, index) => (
           <div key={index} className="flex items-center w-96 text-slate-100 mb-2">
             <input
@@ -118,6 +124,7 @@ const Modal = ({onClose, columns, task}) => {
     onClose();
   };
 
+
   return (
     <div className='modal modalOverlay overflow-y-scroll overflow-x-hidden bg-primary p-6 text-slate-100 scrollbar-hide md:scrollbar-default'>
         <h1 className='py-2.5 text-lg font-bold'>Add new Task</h1>
@@ -145,12 +152,14 @@ const Modal = ({onClose, columns, task}) => {
             <label className="block capitalize tracking-wide text-xs font-bold mb-2" htmlFor="description">
                 Description
             </label>
-            <textarea className="w-96 h-24 px-3 py-2 mb-4 leading-5 bg-primary border border-gray focus:border-morado focus:outline-none rounded-lg resize-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300" placeholder='e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little'
+            <textarea className="w-96 h-24 px-3 py-2 mb-4 leading-5 bg-primary border border-gray focus:border-morado focus:outline-none rounded-lg resize-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300" 
+             placeholder=''
              id="description" 
              type="text" 
              name="description" 
              value={description} 
-             onChange={(e) => setDescription(e.target.value)}></textarea>
+             onChange={(e) => setDescription(e.target.value)}>
+             </textarea>
             </div>
         </div>
 
@@ -178,7 +187,8 @@ const Modal = ({onClose, columns, task}) => {
                 <select class="block appearance-none w-96 bg-primary border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none text-slate-100" 
                 id="status"
                 value={columnId}
-                onChange={(e) => setColumnId(e.target.value)}
+                onChange={(e) => 
+                setColumnId(e.target.value)}
                 >
                  <option value="">Select a column</option>
                  {selectOptions}
