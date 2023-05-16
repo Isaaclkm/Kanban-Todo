@@ -83,6 +83,7 @@ const Modal = ({onClose, columns, task}) => {
       }
     }`
 
+
     const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
       update: (cache, { data: { createTask } }) => {
         cache.modify({
@@ -108,18 +109,43 @@ const Modal = ({onClose, columns, task}) => {
       }
     });
 
+    const UPDATE_TASK_MUTATION = gql`
+     mutation($id: ID!, $title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
+      updateTask(_id: $id, title: $title, columnId: $columnId, description: $description, subtasks: $subtasks) {
+        _id
+        title
+      }
+    } `
+
+    const [updateTask, { updateLoading, updateError }] = useMutation(UPDATE_TASK_MUTATION, {
+      onCompleted: (data) => {
+        console.log(data);
+      },
+    });
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    createTask({
-      variables: {
-        title,
-        columnId,
-        description,
-        subtasks
-      }
-      
-    });
+    if (task) {
+      updateTask({
+        variables: {
+          _id: task._id, // Pass the existing task's ID
+          title,
+          columnId,
+          description,
+          subtasks,
+        },
+      });
+    } else {
+      createTask({
+        variables: {
+          title,
+          columnId,
+          description,
+          subtasks,
+        },
+      });
+    }
 
     onClose();
   };

@@ -3,6 +3,17 @@ import './Modal.css'
 import React from 'react'
 import { useParams } from 'react-router-dom';
 
+
+const GET_PROJECT = gql`
+    query ($id: ID!){
+      project(_id: $id) {
+       columns {
+        _id
+        title
+      }
+    }
+  }`;
+
 const EditTaskModal = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -62,17 +73,7 @@ const EditTaskModal = () => {
         ));
     };
     
-    const {id} = useParams();
 
-  const GET_PROJECT = gql`
-    query ($id: ID!){
-      project(_id: $id) {
-       columns {
-        _id
-        title
-      }
-    }
-  }`;
 
     const selectOptions = columns.map((column) => (
         <option key={column._id} value={column._id}>

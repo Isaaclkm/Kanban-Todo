@@ -11,7 +11,7 @@ extend type Query {
   }
   type Mutation {
     createTask(title: String!, columnId: ID!, description: String!, subtasks: [SubtaskInput]): Task
-    updateTask(_id: ID!, title: String!, columnId: ID!, subtasks: [SubtaskInput]): Task
+    updateTask(_id: ID!, title: String!, description: String! , columnId: ID!, subtasks: [SubtaskInput]): Task
     deleteTask(_id: ID!): Task
   }
 
