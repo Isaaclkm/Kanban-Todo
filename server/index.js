@@ -18,7 +18,7 @@ const server = new ApolloServer({
 });
 
 server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}/graphql`);
+  console.log(`🚀 Server ready at ${url}graphql`);
 });
 
 const PORT = process.env.PORT || 5000; // Set the port to listen on

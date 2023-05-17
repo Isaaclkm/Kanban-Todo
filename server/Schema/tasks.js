@@ -61,11 +61,12 @@ export const resolvers = {
             title,
             columnId,
             description,
-            subtasks: subtaskInputs.map((subtask) => ({
-              title: subtask.title
+            subtasks: subtaskInputs.map(({ __typename, title }) => ({
+              __typename, // Include __typename field
+              title
             })),
           });
-      
+
           await task.save();
       
           columnFound.tasks.push(task);
@@ -114,7 +115,7 @@ export const resolvers = {
           task.title = title;
           task.columnId = columnId
           task.description = description
-          task.subtasks = subtasks
+          task.subtasks = subtasks.map(({ title }) => ({ title }));
           const updatedTask = await task.save();
       
           return updatedTask;

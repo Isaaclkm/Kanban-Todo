@@ -2,13 +2,35 @@ import React, { useEffect, useState } from 'react'
 import './Modal.css'
 import { gql, useMutation } from '@apollo/client';
 
+const CREATE_TASK_MUTATION = gql`
+mutation($title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
+  createTask(title: $title, columnId: $columnId, description: $description,  subtasks: $subtasks) {
+    _id
+    title
+  }
+}`
+
+
+
+
+const UPDATE_TASK_MUTATION = gql`
+ mutation($taskId: ID!, $title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
+   updateTask(_id: $taskId, title: $title, columnId: $columnId, description: $description, subtasks: $subtasks) {
+     _id
+     title
+   }
+ }`;
+
+
 
 const Modal = ({onClose, columns, task}) => {
 
+  const [taskId, setTaskId] = useState('')
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subtasks, setSubtasks] = useState([]);
   const [columnId, setColumnId] = useState('');
+  
 
   useEffect(() => {
     console.log(task)
@@ -17,6 +39,8 @@ const Modal = ({onClose, columns, task}) => {
       setDescription(task.description);
       setSubtasks(task.subtasks);
       setColumnId(task.columnId);
+      console.log(task._id)
+      console.log(taskId)
     } else {
       setTitle('');
       setDescription('');
@@ -25,6 +49,59 @@ const Modal = ({onClose, columns, task}) => {
     }
   }, [task]);
 
+  const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
+    update: (cache, { data: { createTask } }) => {
+      cache.modify({
+        id: cache.identify({ __typename: 'Column', _id: columnId }),
+        fields: {
+          tasks(existingTasks = []) {
+            const newTaskRef = cache.writeFragment({
+              data: createTask,
+              fragment: gql`
+                fragment NewTask on Task {
+                  _id
+                  title
+                }
+              `
+            });
+            return [...existingTasks, newTaskRef];
+          }
+        }
+      });
+    },
+  onCompleted: (data) => {
+     console.log(data);
+    }
+  });
+
+
+
+  const [updateTask, { updateLoading, updateError }] = useMutation(UPDATE_TASK_MUTATION, {
+    update: (cache, { data: { updateTask } }) => {
+      cache.modify({
+        id: cache.identify(task), // Use the task object to identify the cache entry
+        fields: {
+          title() {
+            return updateTask.title; // Update the title field with the new value
+          },
+          description() {
+            return updateTask.description; // Update the title field with the new value
+          },
+          subtasks() {
+            return updateTask.subtasks; // Update the title field with the new value
+          },
+          columnId() {
+            return updateTask.columnId; // Update the title field with the new value
+          }
+
+          // Update other fields in a similar way
+        },
+      });
+    },
+    onCompleted: (data) => {
+      console.log(data);
+    },
+  });
 
   const handleAddSubtask = () => {
     setSubtasks([...subtasks, { title: '' }]);
@@ -75,81 +152,34 @@ const Modal = ({onClose, columns, task}) => {
         </option>
       ));
 
-    const CREATE_TASK_MUTATION = gql`
-    mutation($title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
-      createTask(title: $title, columnId: $columnId, description: $description,  subtasks: $subtasks) {
-        _id
-        title
-      }
-    }`
+      const cleanedSubtasks = subtasks.map(({ __typename, ...rest }) => rest);
 
-
-    const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
-      update: (cache, { data: { createTask } }) => {
-        cache.modify({
-          id: cache.identify({ __typename: 'Column', _id: columnId }),
-          fields: {
-            tasks(existingTasks = []) {
-              const newTaskRef = cache.writeFragment({
-                data: createTask,
-                fragment: gql`
-                  fragment NewTask on Task {
-                    _id
-                    title
-                  }
-                `
-              });
-              return [...existingTasks, newTaskRef];
-            }
-          }
-        });
-      },
-    onCompleted: (data) => {
-       console.log(data);
-      }
-    });
-
-    const UPDATE_TASK_MUTATION = gql`
-     mutation($id: ID!, $title: String!, $columnId: ID!, $description: String!, $subtasks: [SubtaskInput]){
-      updateTask(_id: $id, title: $title, columnId: $columnId, description: $description, subtasks: $subtasks) {
-        _id
-        title
-      }
-    } `
-
-    const [updateTask, { updateLoading, updateError }] = useMutation(UPDATE_TASK_MUTATION, {
-      onCompleted: (data) => {
-        console.log(data);
-      },
-    });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (task) {
-      updateTask({
-        variables: {
-          _id: task._id, // Pass the existing task's ID
-          title,
-          columnId,
-          description,
-          subtasks,
-        },
-      });
-    } else {
-      createTask({
-        variables: {
-          title,
-          columnId,
-          description,
-          subtasks,
-        },
-      });
-    }
-
-    onClose();
-  };
-
+      const handleSubmit = (e) => {
+        e.preventDefault();
+      
+        if (task) {
+          updateTask({
+            variables: {
+              taskId: task._id, // Use `taskId` instead of `_id`
+              title,
+              columnId,
+              description,
+              subtasks: cleanedSubtasks,
+            },
+            onCompleted: () => onClose(), // Move the onClose call to onCompleted
+          });
+        } else {
+          createTask({
+            variables: {
+              title,
+              columnId,
+              description,
+              subtasks: cleanedSubtasks,
+            },
+            onCompleted: () => onClose(), // Move the onClose call to onCompleted
+          });
+        }
+      };
 
   return (
     <div className='modal modalOverlay overflow-y-scroll overflow-x-hidden bg-primary p-6 text-slate-100 scrollbar-hide md:scrollbar-default'>
@@ -227,7 +257,7 @@ const Modal = ({onClose, columns, task}) => {
             
         </div>
         {/* Status Select */}
-        <button className='rounded-full bg-white w-96 h-12 text-morado font-semibold' type='submit'>Create new Task</button>
+        <button className='rounded-full bg-white w-96 h-12 text-morado font-semibold' type='submit'>Create New Task</button>
 
         </form>
 

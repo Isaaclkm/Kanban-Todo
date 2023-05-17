@@ -21,7 +21,6 @@ const GET_PROJECT = gql`
           title
           description
           subtasks{
-            _id
             title
           }
         }

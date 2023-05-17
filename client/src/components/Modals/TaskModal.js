@@ -102,7 +102,7 @@ const TaskModal = ({ onClick, task }) => {
                     {subtasks && subtasks.map((subtask) => (
                     <div className='bg-darker mt-2 w-96 h-14 text-slate-400 flex flex-row items-center'>
                         <input className='mx-2' type="checkbox" name="subtask"></input>
-                        <label for="subtask" key={subtask.title}>{subtask.title}</label>
+                        <label htmlFor="subtask" key={subtask.title}>{subtask.title}</label>
                     </div>
                   
                     ))}
