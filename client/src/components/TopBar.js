@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Modal from './Modals/Modal';
 import { createPortal } from 'react-dom';
 import DeleteBoard from './Modals/DeleteBoard';
+import NewBoard from './Modals/NewBoard';
 
 
 
@@ -66,25 +67,39 @@ const TopBar = ({columns}) => {
             {/* New Board Modal ends */}
 
 
+
+
+            {/* Edit Modal begins */}
+            {openEdit && createPortal(
+             <NewBoard onClose={() => {setOpenEdit(!openEdit); setShowOverlay(!showOverlay)}} 
+             project={project}
+             />,
+             document.body
+            )}
+            {/* Edit Modal ends */}
+
+
+
             {/* Delete Modal starts */}
             {showDeleteBoard && createPortal(
              <DeleteBoard onClose={() => {setDeleteBoard(!showDeleteBoard); setShowOverlay(!showOverlay)}} columns={columns} />,
             document.body
             )}
             {/* Delete MOdal Ends */}
+            
 
-          {/* Overlay style */}
-           {showOverlay && (
-            <div
-              className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
-              onClick={() => {
-              setShowModal(false);
-              setShowOverlay(false);
-              setDeleteBoard(false);
-             }}
-           />
-           )}
-          {/* Overlay Ends */}
+            {/* Overlay style */}
+            {showOverlay && (
+              <div
+                className='fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10'
+                onClick={() => {
+                setShowModal(false);
+                setShowOverlay(false);
+                setDeleteBoard(false);
+              }}
+            />
+            )}
+            {/* Overlay Ends */}
    </div>
   )
 }

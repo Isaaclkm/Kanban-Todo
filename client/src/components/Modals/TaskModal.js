@@ -82,7 +82,7 @@ const TaskModal = ({ onClick, task }) => {
                          setShowDeleteTask(true);
                          setShowOverlay(true);
                        }}>
-                        Delete Task
+                      Delete Task
                       </a>
                   </div>
                    )}

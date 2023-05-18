@@ -46,14 +46,17 @@ export const resolvers = {
       const project = new Project({
         name,
       });
+      
       const savedProject = project.save();
       return savedProject;
     },
+
     deleteProject: async (_, { _id }) => {
       const deletedProject = await Project.findByIdAndDelete(_id);
       if (!deletedProject) throw new Error("Project not found");
       return deletedProject;
     },
+
     updateProject: async (_, args) => {
       const updatedProject = await Project.findByIdAndUpdate(
         args._id,

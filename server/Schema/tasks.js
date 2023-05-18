@@ -9,6 +9,7 @@ extend type Query {
     tasks: [Task]
     task(_id: ID!): Task
   }
+
   type Mutation {
     createTask(title: String!, columnId: ID!, description: String!, subtasks: [SubtaskInput]): Task
     updateTask(_id: ID!, title: String!, description: String! , columnId: ID!, subtasks: [SubtaskInput]): Task
@@ -19,6 +20,7 @@ extend type Query {
     title: String!
     createdAt: String
   }
+
   type Task {
     _id: ID!
     title: String!
@@ -29,9 +31,11 @@ extend type Query {
     createdAt: String
     updatedAt: String
   }
+
   type Subtask {
   title: String!
 }
+
   input SubtaskInput {
   title: String!
 }

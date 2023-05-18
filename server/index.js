@@ -6,7 +6,6 @@ import { typeDefs, resolvers } from './Schema/schema.js';
 
 
 const app = express();
-// import { graphqlHTTP } from 'express-graphql';
 // import { schema } from './Schema/schema.js';
 
 
