@@ -7,12 +7,13 @@ import NewBoard from './Modals/NewBoard';
 
 
 
-const TopBar = ({columns}) => {
+const TopBar = ({columns, project}) => {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteBoard, setDeleteBoard] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
 
     const [isOpen, setIsOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
 
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -45,7 +46,11 @@ const TopBar = ({columns}) => {
                   </svg>
                   {isOpen && (
                    <div className="dropdown-menu absolute bg-morado right-1 w-24 h-24 flex flex-col items-center justify-evenly rounded-lg text-slate-100">
-                      <a href="#" onClick={editBoard}> 
+                      <a href="#" onClick={() => {
+                        setOpenEdit(!openEdit);
+                        setShowOverlay(!showOverlay)  
+                      }}
+                      > 
                       Edit Board
                       </a>
                       <a href="#" onClick={() => {
@@ -95,6 +100,7 @@ const TopBar = ({columns}) => {
                 onClick={() => {
                 setShowModal(false);
                 setShowOverlay(false);
+                setOpenEdit(false);
                 setDeleteBoard(false);
               }}
             />

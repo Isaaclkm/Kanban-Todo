@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Modal.css'
 import { useMutation, gql } from '@apollo/client';
 
@@ -11,18 +11,33 @@ const CREATE_PROJECT_MUTATION = gql`
   }
 `;
 
-const UPDATE_TASK_MUTATION = gql`
-  mutation($id: ID!, $name: String!){
-    updateProject(_id: $id, name: $name) {
+const UPDATE_PROJECT_MUTATION = gql`
+  mutation($projectId: ID!, $name: String!){
+    updateProject(_id: $projectId, name: $name) {
       _id
       name
     }
   }
 `;
 
-const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
+const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects, project}) => {
+
+  const [projectId, setProjectId] = useState(project._id)
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    console.log(project)
+    console.log(project._id)
+    if (project) {
+      setName(project.name);
+      setDescription(project.description);
+    } else {
+      setName('');
+      setDescription('');
+    }
+  }, [project]);
+
 
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT_MUTATION,{
@@ -33,11 +48,10 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
        }
   });
 
-  const [updateProject, {updateLoading, updateError }] = useMutation(UPDATED_PROJECT_MUTATION,{
+  const [updateProject, {updateLoading, updateError }] = useMutation(UPDATE_PROJECT_MUTATION,{
     refetchQueries: [{ query: GET_PROJECTS }],
     onCompleted: (data) => {
         console.log(data);
-        refetchProjects();
      }  
   });
 
@@ -45,18 +59,31 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    console.log(project)
+    console.log(project._id)
+    // const formData = new FormData(e.target);
+    // const name = formData.get('name');
+    // const description = formData.get('description');
 
-    const formData = new FormData(e.target);
-    const name = formData.get('name');
-    const description = formData.get('description');
+    if(project) {
+      updateProject({
+        variables: {
+          projectId: project._id,
+          name,
+          description
+        }
+      })
+    }else{
+      createProject({
+        variables: {
+          name,
+          description
+        }
+      });
 
-    createProject({
-      variables: {
-        name,
-        description
-      }
-    });
-
+    }
+    
     onClose();
   };
 
@@ -70,7 +97,12 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
             <label className="block uppercase tracking-wide text-xs font-bold mb-2" htmlFor="name">
               Name
             </label>
-            <input className="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight" id="name" type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+            <input className="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight" 
+            id="name" 
+            type="text" 
+            name="name" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} />
           </div>
         </div>
 
@@ -80,7 +112,11 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects}) => {
             <label className="block uppercase tracking-wide text-xs font-bold mb-2" htmlFor="description">
               Description
             </label>
-            <textarea className="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight" id="description" name="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <textarea className="appearance-none block w-96 bg-primary border border-gray focus:border-morado focus:outline-none rounded py-3 px-4 mb-3 leading-tight" 
+            id="description" 
+            name="description" 
+            value={description} 
+            onChange={(e) => setDescription(e.target.value)} />
           </div>
         </div>
 

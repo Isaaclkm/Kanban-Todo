@@ -53,7 +53,6 @@ const Board = (props) => {
     useEffect(() => {
       refetch({id});
     }, [id, refetch]);
-
       
     if (loading) return ( 
       <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5 min-h-screen'>
@@ -72,7 +71,7 @@ const Board = (props) => {
   return (
   <div className='Board flex flex-col flex-shrink border-slate-600 w-4/5 min-h-screen'>
        {selectedProject
-        ?<TopBar columns = {columns}/>
+        ?<TopBar columns = {columns} project = {data.project} />
         :<TopBar/>
       }
 

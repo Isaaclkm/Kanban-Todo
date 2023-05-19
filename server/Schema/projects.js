@@ -46,7 +46,7 @@ export const resolvers = {
       const project = new Project({
         name,
       });
-      
+
       const savedProject = project.save();
       return savedProject;
     },
@@ -57,20 +57,31 @@ export const resolvers = {
       return deletedProject;
     },
 
-    updateProject: async (_, args) => {
-      const updatedProject = await Project.findByIdAndUpdate(
-        args._id,
-        args,
-        { new: true }
-      );
-      if (!updatedProject) throw new Error("Project not found");
-      return updatedProject;
+    updateProject: async (_, {_id, name, description}) => {
+      const projectId = _id
+
+      try {
+        const project = await Project.findById(projectId);
+        if(!project){
+          throw new Error("Project not found")
+        }
+
+        project.name = name;
+        project.description = description;
+        const updatedProject = await project.save();
+
+        return updatedProject
+      } catch (error) {
+        throw new Error(error)
+      }
     },
   },
+   
   Project: {
 		columns: async (parent) => {
       return await Column.find({ projectId: parent._id });
     },
+    
     tasks: async (parent) => {
       return await Task.find({ taskId: parent._id });
     }
