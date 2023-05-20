@@ -5,7 +5,12 @@ import cors from 'cors';
 
 
 const app = express();
-app.use(cors())
+
+const corsOptions = {
+  origin: 'https://kanban-todos.onrender.com/',
+  credentials: true, // if you need to include cookies or authorization headers
+};
+app.use(cors(corsOptions))
 
 import { connect } from './db.js';
 
