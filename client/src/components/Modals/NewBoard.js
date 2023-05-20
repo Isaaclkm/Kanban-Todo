@@ -5,7 +5,6 @@ import { useMutation, gql } from '@apollo/client';
 const CREATE_PROJECT_MUTATION = gql`
   mutation createProject($name: String!, $description: String!) {
     createProject(name: $name, description: $description) {
-      _id
       name
     }
   }
@@ -22,13 +21,10 @@ const UPDATE_PROJECT_MUTATION = gql`
 
 const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects, project}) => {
 
-  const [projectId, setProjectId] = useState(project._id)
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    console.log(project)
-    console.log(project._id)
     if (project) {
       setName(project.name);
       setDescription(project.description);
@@ -59,14 +55,10 @@ const NewBoard = ({ onClose, GET_PROJECTS, refetchProjects, project}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    console.log(project)
-    console.log(project._id)
     // const formData = new FormData(e.target);
     // const name = formData.get('name');
     // const description = formData.get('description');
-
-    if(project) {
+    if(project && project._id) {
       updateProject({
         variables: {
           projectId: project._id,

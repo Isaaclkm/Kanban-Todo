@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import '../index.css'
 import boardIcon from '../assets/icon-board.svg'
 import Logo from '../assets/logo-light.svg'
-import { createPortal } from 'react-dom';
-import { useQuery, gql } from "@apollo/client";
 import NewBoard from './Modals/NewBoard';
 import { Link, useParams } from 'react-router-dom';
 
@@ -12,7 +10,7 @@ const Sidebar = ({projects, onProjectSelect, GET_PROJECTS }) => {
   const [showBoardModal, setShowBoardModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
-
+  
 
   
   return (
@@ -23,7 +21,7 @@ const Sidebar = ({projects, onProjectSelect, GET_PROJECTS }) => {
             </div>
         
             <h1 className='uppercase text-gray-400 ml-7 my-7 tracking-widest'>all boards </h1>
-            <ul className="flex flex-col flex-start ml-7 text-base h-full space-y-6">
+            <ul className="flex flex-col flex-start ml-7 text-base h-auto space-y-6">
                 {/* {boards} */}
                 
                    {projects.map((project) => (
@@ -54,6 +52,7 @@ const Sidebar = ({projects, onProjectSelect, GET_PROJECTS }) => {
 
             </ul>
 
+   
 
             {/* Overlay style */}
          {showOverlay && (
