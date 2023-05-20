@@ -1,13 +1,11 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server';
 import { typeDefs, resolvers } from './Schema/schema.js';
-// import {typeDefs} from './Schema/schema.js';
-// import {resolvers} from './Schema/resolver.js'
+import cors from 'cors';
 
 
 const app = express();
-// import { schema } from './Schema/schema.js';
-
+app.use(cors())
 
 import { connect } from './db.js';
 
@@ -23,12 +21,6 @@ server.listen().then(({ url }) => {
 const PORT = process.env.PORT || 5000; // Set the port to listen on
 
 connect();
-
-// app.use('/graphql', graphqlHTTP({
-//   schema,
-//   graphiql: true
-// }));
-
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

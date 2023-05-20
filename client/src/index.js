@@ -3,11 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
-import { disableReactDevtools } from '@fvilers/disable-react-devtools;'
+import { disableReactDevtools } from '@fvilers/disable-react-devtools';
 
-
-
-const root = ReactDOM.render(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
