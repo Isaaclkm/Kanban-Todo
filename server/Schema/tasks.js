@@ -1,4 +1,4 @@
-import { gql } from "@graphql-tools/schema"; 
+import { gql } from "apollo-server-express";
 import Column from '../Models/Column.js'
 import Project from '../Models/Project.js'
 import Task from '../Models/Task.js'
