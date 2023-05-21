@@ -6,8 +6,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client
 import { disableReactDevtools } from '@fvilers/disable-react-devtools';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: `${backendUrl}/graphql`,
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
