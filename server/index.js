@@ -1,5 +1,5 @@
 import express from 'express';
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './Schema/schema.js';
 import cors from 'cors';
 import { connect } from './db.js';
