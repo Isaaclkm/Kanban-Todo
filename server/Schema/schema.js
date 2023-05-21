@@ -1,6 +1,6 @@
 import { makeExecutableSchema } from 'graphql-tools';
 // import { resolvers } from './resolver.js';
-import { gql } from "apollo-server"; 
+import { gql } from "@graphql-tools/schema"; 
 import {typeDefs as Project} from './projects.js'
 import {typeDefs as Columns} from './columns.js'
 import {typeDefs as Tasks} from './tasks.js'
