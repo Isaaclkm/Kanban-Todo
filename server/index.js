@@ -7,7 +7,7 @@ import { connect } from './db.js'
 const app = express();
 
 const corsOptions = {
-  origin: 'https://kanban-todos-api.onrender.com',
+  origin: 'https://kanban-todos.onrender.com',
   credentials: true,
 };
 
