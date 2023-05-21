@@ -12,6 +12,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+
 const server = new ApolloServer({ 
   typeDefs,
   resolvers,
